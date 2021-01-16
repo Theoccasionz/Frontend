@@ -1,5 +1,12 @@
 import React from 'react';
+import Header from '../components/Header';
 
-const About: React.FC = () => {
-  return <div>The Occasionz</div>;
+const Index: React.FC = () => {
+  return (
+    <div>
+      <Header />
+    </div>
+  );
 };
+
+export default Index
