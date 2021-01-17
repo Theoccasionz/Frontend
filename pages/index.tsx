@@ -1,11 +1,11 @@
 import React from 'react';
-import Header from '../components/Header';
+import Layout from '../components/Layout';
 
 const Index: React.FC = () => {
   return (
-    <div>
-      <Header />
-    </div>
+    <Layout>
+      Hello
+    </Layout>
   );
 };
 
