@@ -5,7 +5,7 @@ import Nav from 'react-bootstrap/Nav';
 
 const Header: React.FC = () => {
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar sticky="top" bg="dark" variant="dark" expand="lg">
       <Navbar.Brand>
         <Link href="/index">
           <a>The Occasionz</a>
@@ -13,7 +13,7 @@ const Header: React.FC = () => {
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="ml-auto">
+        <Nav className="ml-auto align-items-center">
           <Nav.Link>
             <Link href="/">
               <a>How it Works</a>
