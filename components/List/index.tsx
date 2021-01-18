@@ -12,7 +12,7 @@ const List: React.FC<Props> = ({ data, heading }) => {
   return (
     <Row>
       {data.map(d => (
-        <Col key={`${d}`}>
+        <Col sm={12} md={6} lg={3} key={`${d}`}>
           <SkeletonCard heading={heading} />
         </Col>
       ))}
