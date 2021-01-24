@@ -26,7 +26,7 @@ const Filters: FC<Props> = ({ filters, updateFilters }) => {
     <Form className="my-3">
       <Row className="align-items-center">
         <Col md={12} lg={2}>
-          <h3>Filters</h3>
+          <h2>Filters</h2>
         </Col>
         <Col xs={12} sm={6} md={3} lg={2}>
           <Form.Label htmlFor="dateInput">Date</Form.Label>
