@@ -3,9 +3,9 @@ import Container from 'react-bootstrap/Container';
 
 import Filters, { Filter } from '../components/Filters';
 import Layout from '../components/Layout';
-import List from '../components/List';
 import SkeletonFeatured from '../components/Skeleton/SkeletonFeatured';
 import PartyNav from '../components/Nav';
+import Carousel from '../components/Carousel';
 
 const Index: FC = () => {
   const [filters, setFilters] = useState<Filter>({
@@ -22,17 +22,18 @@ const Index: FC = () => {
         <div>
           <PartyNav />
         </div>
+
         <h1>Party Themes</h1>
-        <List data={[1, 2, 3, 4]} heading={true} />
+        <Carousel />
 
         <h1>DJ in your Town</h1>
-        <List data={[1, 2, 3, 4]} />
+        <Carousel />
 
         <h1>Popular Parties</h1>
         <SkeletonFeatured />
 
         <h1>Party Special</h1>
-        <List data={[1, 2, 3, 4]} heading={true} />
+        <Carousel />
       </Container>
     </Layout>
   );
