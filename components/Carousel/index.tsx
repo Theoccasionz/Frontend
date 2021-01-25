@@ -21,23 +21,23 @@ const defaultItems = [
 ];
 
 interface Props {
-  responsive?: Object;
+  responsive?: any;
   items?: Array<JSX.Element>;
 }
 
-const responsive = {
+const defaultResponsive = {
   568: { items: 1 },
   768: { items: 2 },
   992: { items: 4 },
 };
 
-const Carousel: FC<Props> = ({ items }) => {
+const Carousel: FC<Props> = ({ items, responsive }) => {
   return (
     <AliceCarousel
       mouseTracking
       infinite={true}
       items={items || defaultItems}
-      responsive={responsive}
+      responsive={responsive || defaultResponsive}
       disableDotsControls={true}
     />
   );
