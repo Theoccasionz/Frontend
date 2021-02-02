@@ -2,7 +2,7 @@ import { FC, Fragment } from 'react';
 import Link from 'next/link';
 import Button from 'react-bootstrap/Button';
 
-import { LoginForm, LoginHeader } from '../components/Login';
+import { LoginForm, LoginHeader, LoginFooter } from '../components/Login';
 
 const LoginPage: FC = () => {
   return (
@@ -16,6 +16,7 @@ const LoginPage: FC = () => {
         </Link>
       </p>
       <LoginForm />
+      <LoginFooter />
     </Fragment>
   );
 };
