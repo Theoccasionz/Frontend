@@ -10,6 +10,7 @@
     "lint": "tsc --noEmit && eslint ./components/** ./pages/**"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "next": "10.0.5",
     "react": "17.0.1",

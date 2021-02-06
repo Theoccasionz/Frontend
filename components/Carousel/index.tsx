@@ -36,7 +36,7 @@ const Carousel: FC<Props> = ({ items, responsive }) => {
     <AliceCarousel
       mouseTracking
       infinite={true}
-      items={items || defaultItems}
+      items={(items?.length>0 && items) || defaultItems}
       responsive={responsive || defaultResponsive}
       disableDotsControls={true}
     />
