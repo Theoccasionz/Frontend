@@ -4,12 +4,13 @@ import Layout from '../components/Layout';
 import SkeletonFeatured from '../components/Skeleton/SkeletonFeatured';
 import PartyNav from '../components/Nav';
 import Carousel from '../components/Carousel';
-import { fetchPartyThemes, fetchDJThemes } from '../server';
+import { fetchPartyThemes, fetchDJThemes, fetchSpecialParties } from '../server';
 import PartyThemeCard from '../components/PartyThemeCard';
 
 const Index: FC = () => {
   const [partyThemes, setPartyThemes] = useState([]);
   const [djThemes, setDjThemes] = useState([]);
+  const [specialParties, setSpecialParties] = useState([]);
 
   const getPartyThemes = async () => {
     let response;
@@ -29,7 +30,6 @@ const Index: FC = () => {
     response = await fetchDJThemes();
     if (!response.error) {
       let themesList: any[] = [];
-      console.log(response);
       response.forEach((r: any) =>
         themesList.push(<PartyThemeCard name={r.Theme_Name} image={r.Image_url} count={r.count} />)
       );
@@ -38,10 +38,23 @@ const Index: FC = () => {
     }
   };
 
+  const getSpecialParties = async () => {
+    let response;
+    response = await fetchSpecialParties();
+    if (!response.error) {
+      let themesList: any[] = [];
+      response.forEach((r: any) =>
+        themesList.push(<PartyThemeCard name={r.Theme_Name} image={r.Image_url} count={r.count} />)
+      );
+      // @ts-ignore
+      setSpecialParties(themesList);
+    }
+  };
+
   useEffect(() => {
     getPartyThemes();
     getDJThemes();
-    console.log('HELO');
+    getSpecialParties();
   }, []);
 
   return (
@@ -54,13 +67,13 @@ const Index: FC = () => {
       <Carousel items={partyThemes} />
 
       <h1>DJ in your Town</h1>
-      <Carousel items={djThemes}/>
+      <Carousel items={djThemes} />
 
       <h1>Popular Parties</h1>
       <SkeletonFeatured />
 
       <h1>Party Special</h1>
-      <Carousel />
+      <Carousel items={specialParties} />
     </Layout>
   );
 };

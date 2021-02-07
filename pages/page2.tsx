@@ -12,7 +12,7 @@ const Page: FC = () => {
   return (
     <Layout>
       <h2 className="text-center">Halloween party- at your own risk</h2>
-      <Carousel responsive={responsive} />
+      <Carousel items={[]} responsive={responsive} />
       <Row className="mt-4">
         {[1, 2, 3, 4, 5, 6, 7].map(d => (
           <Col key={d} lg={4} md={12} className="mx-auto">

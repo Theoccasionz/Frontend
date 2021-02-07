@@ -1,10 +1,10 @@
-import { PARTY_THEME_DATA, DJ_THEME_DATA } from '../constants';
+import { PARTY_DATA } from '../constants';
 import axios from 'axios';
 
 const fetchPartyThemes = async () => {
   let response: any;
   try {
-    response = await axios.get(PARTY_THEME_DATA());
+    response = await axios.get(PARTY_DATA('partythemes'));
     return response.data;
   } catch (error) {
     return { error: error?.response?.data || error?.message };
@@ -14,11 +14,21 @@ const fetchPartyThemes = async () => {
 const fetchDJThemes = async () => {
   let response: any;
   try {
-    response = await axios.get(DJ_THEME_DATA());
+    response = await axios.get(PARTY_DATA('djthemes'));
     return response.data;
   } catch (error) {
     return { error: error?.response?.data || error?.message };
   }
 };
 
-export { fetchPartyThemes, fetchDJThemes };
+const fetchSpecialParties = async () => {
+  let response: any;
+  try {
+    response = await axios.get(PARTY_DATA('sparty'));
+    return response.data;
+  } catch (error) {
+    return { error: error?.response?.data || error?.message };
+  }
+};
+
+export { fetchPartyThemes, fetchDJThemes, fetchSpecialParties };

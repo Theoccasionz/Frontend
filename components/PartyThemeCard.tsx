@@ -1,5 +1,6 @@
 import Col from 'react-bootstrap/Col';
 import Image from 'next/image';
+import Badge from 'react-bootstrap/Badge';
 
 type PartyThemeCardProps = {
   image: string;
@@ -11,11 +12,13 @@ const PartyThemeCard = ({ image, count, name }: PartyThemeCardProps) => {
   return (
     <Col>
       <div>
-        <img width="100%" height={300} alt={name} src={image} />
+        <Image width={300} height={300} layout="responsive" alt={name} src={`/images/${image}`} />
       </div>
-      <div className="d-flex justify-content-between">
-        <p>{name}</p>
-        <p className="badge">{count}</p>
+      <div className="text-center pt-3">
+        <h2>{name}</h2>
+        <h4 title="count">
+          <Badge variant="primary">{count}</Badge>
+        </h4>
       </div>
     </Col>
   );

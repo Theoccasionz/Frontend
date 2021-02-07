@@ -16,7 +16,6 @@ const ListPartyHeader: React.FC = () => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ml-auto align-items-center">
-          
           <Nav.Link>
             <Link href="/">
               <a>Logout</a>
