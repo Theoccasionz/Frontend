@@ -7,6 +7,13 @@ import Carousel from '../components/Carousel';
 import { fetchPartyThemes, fetchDJThemes, fetchSpecialParties } from '../server';
 import PartyThemeCard from '../components/PartyThemeCard';
 
+const responsive = {
+  568: { items: 2 },
+  768: { items: 3 },
+  992: { items: 4 },
+  1400: { items: 6 },
+};
+
 const Index: FC = () => {
   const [partyThemes, setPartyThemes] = useState([]);
   const [djThemes, setDjThemes] = useState([]);
@@ -64,16 +71,16 @@ const Index: FC = () => {
       </div>
 
       <h1>Party Themes</h1>
-      <Carousel items={partyThemes} />
+      <Carousel items={partyThemes} responsive={responsive} />
 
       <h1>DJ in your Town</h1>
-      <Carousel items={djThemes} />
+      <Carousel items={djThemes} responsive={responsive} />
 
       <h1>Popular Parties</h1>
       <SkeletonFeatured />
 
       <h1>Party Special</h1>
-      <Carousel items={specialParties} />
+      <Carousel items={specialParties} responsive={responsive} />
     </Layout>
   );
 };

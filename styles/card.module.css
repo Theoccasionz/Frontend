@@ -1,0 +1,18 @@
+.card {
+  position: relative;
+  padding: 5px;
+}
+
+.card img {
+  border-radius: 1rem !important;
+  border-top: 5px solid #c4c4c4 !important;
+  border-bottom: 5px solid #c4c4c4 !important;
+}
+
+.dataContainer {
+  position: absolute;
+  width: 90%;
+  margin: 0 auto;
+  top: 8px;
+  left: 10px;
+}
