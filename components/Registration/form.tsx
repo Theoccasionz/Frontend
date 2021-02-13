@@ -154,6 +154,35 @@ const RegistrationForm: FC = () => {
           </Form.Group>
           <Form.Group as={Row}>
             <Form.Label column md={12} lg={4}>
+              Phone Number
+            </Form.Label>
+            <Col md={12} lg={8}>
+              <Form.Control
+                type="text"
+                name="pnumber"
+                placeholder="9999999999"
+                ref={register({ required: true })}
+              />
+              {errors.pnumber && <small className="text-danger">Phone number Required</small>}
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row}>
+            <Form.Label column md={12} lg={4}>
+              Mail Id
+            </Form.Label>
+            <Col md={12} lg={8}>
+              <Form.Control
+                type="email"
+                name="mailportal"
+                placeholder="example@try.com"
+                ref={register({ required: true })}
+              />
+              {errors.mailportal && <small className="text-danger">Mail Required</small>}
+            </Col>
+          </Form.Group>
+
+          <Form.Group as={Row}>
+            <Form.Label column md={12} lg={4}>
               Venue
             </Form.Label>
             <Col md={12} lg={8}>
@@ -238,32 +267,6 @@ const RegistrationForm: FC = () => {
                 style={errors.mail && { border: '1px solid red' }}
               />
               {errors.email && <small className="text-danger">Company Email Required</small>}
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} className="mt-2">
-            <Form.Label column md={12} lg={4}>
-              Second Contact Person Name
-            </Form.Label>
-            <Col md={12} lg={8}>
-              <Form.Control
-                type="text"
-                name="secondperson"
-                placeholder="Mr Smith"
-                ref={register()}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row}>
-            <Form.Label column md={12} lg={4}>
-              Contact Number
-            </Form.Label>
-            <Col md={12} lg={8}>
-              <Form.Control
-                type="text"
-                name="secondpersonnumber"
-                placeholder="9999999999"
-                ref={register()}
-              />
             </Col>
           </Form.Group>
           <Form.Group as={Row}>
