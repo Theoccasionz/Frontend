@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import Container from 'react-bootstrap/Container';
 
-import { RegistrationForm } from '../components/Registration';
+import { RegistrationForm } from '../../components/Registration';
 
 const RegistrationPage = () => {
   return (

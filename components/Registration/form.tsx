@@ -24,12 +24,12 @@ const RegistrationForm: FC = () => {
             <Col md={12} lg={8}>
               <Form.Control
                 type="text"
-                name="companyName"
-                placeholder="Company Name"
+                name="ptype"
+                placeholder="Party Type"
                 ref={register({ required: true })}
-                style={errors.companyName && { border: '1px solid red' }}
+                style={errors.ptype && { border: '1px solid red' }}
               />
-              {errors.companyName && <small className="text-danger">Company Name required</small>}
+              {errors.ptype && <small className="text-danger">Company Name required</small>}
             </Col>
           </Form.Group>
           <Form.Group as={Row}>
@@ -52,7 +52,7 @@ const RegistrationForm: FC = () => {
           </Form.Group>
           <Form.Group as={Row}>
             <Form.Label column md={12} lg={4}>
-              Select State
+              Select City
             </Form.Label>
             <Col md={12} lg={8}>
               <Form.Control
