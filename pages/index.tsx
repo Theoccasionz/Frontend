@@ -8,6 +8,7 @@ import { fetchPartyThemes, fetchDJThemes, fetchSpecialParties } from '../server'
 import PartyThemeCard from '../components/PartyThemeCard';
 
 const responsive = {
+  200: {items:1},
   568: { items: 2 },
   768: { items: 3 },
   992: { items: 4 },
