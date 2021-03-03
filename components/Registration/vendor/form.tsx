@@ -136,7 +136,12 @@ const VendorRegistrationForm: FC = () => {
             </Col>
           </Form.Group>
           <Form.Group controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" name="checkbox" label="I agree to terms and conditions and I will be working for the occasionz as a vendor" ref={register({ required: true })}/>
+            <Form.Check
+              type="checkbox"
+              name="checkbox"
+              label="I agree to terms and conditions and I will be working for the occasionz as a vendor"
+              ref={register({ required: true })}
+            />
             {errors.checkbox && <small className="text-danger">Please check the box</small>}
           </Form.Group>
 

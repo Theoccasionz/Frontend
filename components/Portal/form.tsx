@@ -44,7 +44,9 @@ const DesignForm: FC = () => {
                 ref={register({ required: true })}
                 style={errors.occasionSpecialized && { border: '1px solid red' }}
               />
-              {errors.occasionSpecialized && <small className="text-danger">Vendor Name required</small>}
+              {errors.occasionSpecialized && (
+                <small className="text-danger">Vendor Name required</small>
+              )}
             </Col>
           </Form.Group>
           <Form.Group as={Row}>
@@ -89,7 +91,9 @@ const DesignForm: FC = () => {
                 ref={register({ required: true })}
                 style={errors.setupDuration && { border: '1px solid red' }}
               />
-              {errors.setupDuration && <small className="text-danger">Set Up Duration Required</small>}
+              {errors.setupDuration && (
+                <small className="text-danger">Set Up Duration Required</small>
+              )}
             </Col>
           </Form.Group>
           <Form.Group as={Row}>
@@ -145,7 +149,7 @@ const DesignForm: FC = () => {
               <Form.Control type="file" name="image" ref={register()} />
             </Col>
           </Form.Group>
-          
+
           <div className="text-center">
             <Button variant="primary" type="submit">
               Save

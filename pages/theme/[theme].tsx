@@ -36,7 +36,7 @@ const ThemePage: FC = () => {
       <Row className="mt-4">
         {parties.length > 0
           ? parties.map(p => (
-            //@ts-ignore
+              //@ts-ignore
               <Col key={p.Party_Id} lg={4} md={12} className="mx-auto">
                 <ThemePartyCard data={p} />
               </Col>
