@@ -34,10 +34,12 @@ const DESIGNS = (theme?: String, occasion?: String, place?: String, budget?: Str
       filterString += `place="${place}"`;
     }
     f = 1;
-  };
+  }
 
-    const apiCall = `${BASE_URL}/design${filterString}`;
-    return apiCall;
+  const apiCall = `${BASE_URL}/design${filterString}`;
+  return apiCall;
 };
 
-export { PARTY_DATA, THEMES_DATA, REGISTRATION, DESIGNS };
+const PARTY_PLACE = () => `${BASE_URL}/paplace`;
+
+export { PARTY_DATA, THEMES_DATA, REGISTRATION, DESIGNS, PARTY_PLACE };

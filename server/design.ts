@@ -13,7 +13,6 @@ const fetchDesigns = async (query: Query) => {
 
   let response: any;
   try {
-    console.log(DESIGNS(theme, occasion, place, budget));
     response = await axios.get(DESIGNS(theme, occasion, place, budget));
     return response.data;
   } catch (error) {

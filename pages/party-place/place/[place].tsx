@@ -5,13 +5,13 @@ import Container from 'react-bootstrap/Container';
 import PartyPlace from '../../../components/PartyPlace';
 import { fetchDesigns } from '../../../server/design';
 
-const PartyPlaceTheme = () => {
+const PartyPlacePlace = () => {
   const router = useRouter();
 
   const [designData, setDesignData] = useState([]);
 
   const getDesigns = async () => {
-    let response = await fetchDesigns({ theme: router.query.theme as string });
+    let response = await fetchDesigns({ place: router.query.place as string });
     if (!response.error) {
       setDesignData(response);
     } else {
@@ -21,7 +21,7 @@ const PartyPlaceTheme = () => {
 
   useEffect(() => {
     if (router.asPath !== router.route) {
-      const theme = router.query.theme;
+      const place = router.query.place;
       getDesigns();
     }
   }, [router]);
@@ -35,4 +35,4 @@ const PartyPlaceTheme = () => {
   );
 };
 
-export default PartyPlaceTheme;
+export default PartyPlacePlace;
