@@ -1,8 +1,7 @@
 import { FC, useState, useEffect } from 'react';
-import Layout from '../../components/Layout';
-import PartyNav from '../../components/Nav';
 import PartyPlace from '../../components/Nav/party_place';
 import PartyCard from '../../components/PartyPlace/partyCard';
+import LayoutPartyPlace from '../../layouts/party-place';
 import { partyPlaceData } from '../../server/party-place';
 
 const PartyTown: FC = () => {
@@ -41,10 +40,9 @@ const PartyTown: FC = () => {
     fetchPartiesData();
   }, []);
   return (
-    <Layout>
-      <PartyNav />
+    <LayoutPartyPlace>
       <PartyPlace occasionData={occasionData} themeData={themeData} placeData={placeData} />
-    </Layout>
+    </LayoutPartyPlace>
   );
 };
 

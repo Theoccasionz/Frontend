@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import style from './singleparty.module.css';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { useForm } from 'react-hook-form';
 
 type Data = {
   Design_ImageUrls: string;
@@ -22,10 +26,26 @@ type Props = {
 
 const Singleparty = (props: Props) => {
   const [show, setShow] = useState(false);
+  const [showBook, setShowBook] = useState(false);
   const { data } = props;
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleCloseBook = () => setShow(false);
+  const handleShowBook = () => setShow(true);
+
+   const { register, handleSubmit, errors } = useForm({ mode: 'onTouched' });
+
+   interface FormData {
+     id: string;
+     number: string;
+     password: string;
+   }
+
+   const onSubmit = (data: FormData, e: any) => {
+     console.log(typeof data);
+   };
 
   return (
     <main className={`p-3 ${style.card}`}>
@@ -72,6 +92,92 @@ const Singleparty = (props: Props) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleClose}>
+            Book
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={showBook} onHide={handleCloseBook} animation={false}>
+        <Modal.Header closeButton>
+          <Modal.Title>{data.Design_Theme}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h3>{data.Design_Theme} - Booking</h3>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form.Group as={Row}>
+              <Form.Label column md={12} lg={2}>
+                Name
+              </Form.Label>
+              <Col md={12} lg={4}>
+                <Form.Control
+                  type="text"
+                  name="name"
+                  placeholder="Name"
+                  ref={register({ required: true })}
+                />
+                {errors.name && <small className="text-danger">Name required</small>}
+              </Col>
+              <Form.Label column md={12} lg={2}>
+                Contact Number
+              </Form.Label>
+              <Col md={12} lg={4}>
+                <Form.Control
+                  type="number"
+                  name="number"
+                  placeholder="Contact Number"
+                  ref={register({ required: true })}
+                />
+                {errors.number && <small className="text-danger">Contact Number required</small>}
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+              <Col md={12} lg={4}>
+                <Form.Control
+                  type="text"
+                  name="address"
+                  placeholder="Name"
+                  ref={register({ required: true })}
+                />
+                {errors.address && <small className="text-danger">Address required</small>}
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+              <Form.Label column md={12} lg={2}>
+                Nearest Landmark
+              </Form.Label>
+              <Col md={12} lg={4}>
+                <Form.Control
+                  type="text"
+                  name="landmark"
+                  placeholder="Landmark"
+                  ref={register()}
+                />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+              <Form.Label column md={12} lg={4}>
+                Set up date and time
+              </Form.Label>
+              <Col md={12} lg={8}>
+                <Form.Control
+                  as="textarea"
+                  rows={5}
+                  name="pfeatures"
+                  placeholder="Party features"
+                  ref={register({ required: true })}
+                />
+                {errors.pfeatures && <small className="text-danger">Party features required</small>}
+              </Col>
+            </Form.Group>
+           
+            <div className="text-center">
+              <Button variant="primary" type="submit">
+                Book
+              </Button>
+            </div>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleCloseBook}>
             Book
           </Button>
         </Modal.Footer>

@@ -1,0 +1,21 @@
+.footer {
+  background: #bbbbbb36;
+}
+
+.link {
+  display: block;
+}
+
+.link::before {
+  content: '> ';
+}
+
+.contactArea {
+  text-align: right;
+}
+
+@media (max-width: 992px) {
+  .contactArea {
+    text-align: left;
+  }
+}
