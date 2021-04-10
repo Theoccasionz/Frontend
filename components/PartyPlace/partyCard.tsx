@@ -8,8 +8,8 @@ type Props = {
 const PartyCard: FC<Props> = ({ value, url }) => {
   return (
     <div>
-      <Link href={`/party-place/${url}/${value}`}>
-        <a href={`/party-place/${url}/${value}`}>{value}</a>
+      <Link href={`/party-place/places/?${url}=${value}`}>
+        <a href={`/party-place/palces/?${url}=${value}`}>{value}</a>
       </Link>
     </div>
   );

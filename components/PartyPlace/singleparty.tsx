@@ -32,20 +32,20 @@ const Singleparty = (props: Props) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleCloseBook = () => setShow(false);
-  const handleShowBook = () => setShow(true);
+  const handleCloseBook = () => setShowBook(false);
+  const handleShowBook = () => setShowBook(true);
 
-   const { register, handleSubmit, errors } = useForm({ mode: 'onTouched' });
+  const { register, handleSubmit, errors } = useForm({ mode: 'onTouched' });
 
-   interface FormData {
-     id: string;
-     number: string;
-     password: string;
-   }
+  interface FormData {
+    id: string;
+    number: string;
+    password: string;
+  }
 
-   const onSubmit = (data: FormData, e: any) => {
-     console.log(typeof data);
-   };
+  const onSubmit = (data: FormData, e: any) => {
+    console.log(typeof data);
+  };
 
   return (
     <main className={`p-3 ${style.card}`}>
@@ -68,10 +68,10 @@ const Singleparty = (props: Props) => {
           style={{ flexWrap: 'wrap' }}
         >
           <div className="mx-2">Rs.{data.Design_Price}</div>
-          <Button variant="primary" className="mx-2 my-1">
+          <Button onClick={handleShowBook} className={`mx-2 my-1 ${style.button}`}>
             Book
           </Button>
-          <Button variant="info" onClick={handleShow} className="mx-2 my-1">
+          <Button onClick={handleShow} className={`mx-2 my-1 ${style.button}`}>
             Inclusions
           </Button>
         </p>
@@ -91,7 +91,13 @@ const Singleparty = (props: Props) => {
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
+          <Button
+            className={style.button}
+            onClick={() => {
+              handleClose();
+              handleShowBook();
+            }}
+          >
             Book
           </Button>
         </Modal.Footer>
@@ -104,10 +110,10 @@ const Singleparty = (props: Props) => {
           <h3>{data.Design_Theme} - Booking</h3>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Form.Group as={Row}>
-              <Form.Label column md={12} lg={2}>
+              <Form.Label column lg={2}>
                 Name
               </Form.Label>
-              <Col md={12} lg={4}>
+              <Col lg={10}>
                 <Form.Control
                   type="text"
                   name="name"
@@ -116,10 +122,12 @@ const Singleparty = (props: Props) => {
                 />
                 {errors.name && <small className="text-danger">Name required</small>}
               </Col>
-              <Form.Label column md={12} lg={2}>
+            </Form.Group>
+            <Form.Group as={Row}>
+              <Form.Label column lg={2}>
                 Contact Number
               </Form.Label>
-              <Col md={12} lg={4}>
+              <Col lg={10}>
                 <Form.Control
                   type="number"
                   name="number"
@@ -130,7 +138,10 @@ const Singleparty = (props: Props) => {
               </Col>
             </Form.Group>
             <Form.Group as={Row}>
-              <Col md={12} lg={4}>
+              <Form.Label column lg={2}>
+                Address
+              </Form.Label>
+              <Col lg={10}>
                 <Form.Control
                   type="text"
                   name="address"
@@ -141,23 +152,18 @@ const Singleparty = (props: Props) => {
               </Col>
             </Form.Group>
             <Form.Group as={Row}>
-              <Form.Label column md={12} lg={2}>
+              <Form.Label column lg={2}>
                 Nearest Landmark
               </Form.Label>
-              <Col md={12} lg={4}>
-                <Form.Control
-                  type="text"
-                  name="landmark"
-                  placeholder="Landmark"
-                  ref={register()}
-                />
+              <Col lg={10}>
+                <Form.Control type="text" name="landmark" placeholder="Landmark" ref={register()} />
               </Col>
             </Form.Group>
             <Form.Group as={Row}>
-              <Form.Label column md={12} lg={4}>
+              <Form.Label column lg={2}>
                 Set up date and time
               </Form.Label>
-              <Col md={12} lg={8}>
+              <Col lg={10}>
                 <Form.Control
                   as="textarea"
                   rows={5}
@@ -168,19 +174,14 @@ const Singleparty = (props: Props) => {
                 {errors.pfeatures && <small className="text-danger">Party features required</small>}
               </Col>
             </Form.Group>
-           
+
             <div className="text-center">
-              <Button variant="primary" type="submit">
+              <Button className={style.button} type="submit">
                 Book
               </Button>
             </div>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleCloseBook}>
-            Book
-          </Button>
-        </Modal.Footer>
       </Modal>
     </main>
   );
