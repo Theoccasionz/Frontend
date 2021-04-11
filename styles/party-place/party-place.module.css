@@ -1,0 +1,60 @@
+.filterArea {
+  padding: 1rem 0.5rem;
+  display: flex;
+  justify-content: space-evenly;
+  align-content: center;
+}
+
+.select {
+  background: transparent;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  margin-left: 0.25rem;
+}
+
+.select:focus {
+  outline: none;
+}
+
+.occassion:focus {
+  background: rgb(173 216 230 / 65%);
+}
+
+.theme:focus {
+  background: rgb(249 224 223);
+}
+
+.place:focus {
+  background: #ffffe0;
+}
+
+.budget:focus {
+  background: #c7f3d1;
+}
+
+.headingLarge {
+  text-align: center;
+}
+
+.responsive {
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  align-items: center;
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .filterArea {
+    display: none;
+    text-align: center;
+  }
+  .filterButton:checked {
+    display: block;
+  }
+  .headingLarge {
+    display: none;
+  }
+  .responsive {
+    display: flex;
+  }
+}

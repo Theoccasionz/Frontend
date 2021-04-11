@@ -1,113 +1,78 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useRef } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 
 import Singleparty from './singleparty';
+import style from '../../styles/party-place/party-place.module.css';
 
 type Props = { heading: string; partyData: any[] };
 
 const PartyPlace: FC<Props> = ({ heading = 'Default', partyData }) => {
-  const [filters, setFilters] = useState({
-    occasion: '',
-    themebase: '',
-    setupPlace: '',
-    budget: '',
-    ageGroup: '',
-  });
+  const [visible, setVisible] = useState(false);
+  const filterRef = useRef();
+
+  const handleClick = () => {
+    if (visible) {
+      filterRef.current.style.display = 'none';
+      setVisible(false);
+    } else {
+      filterRef.current.style.display = 'block';
+      setVisible(true);
+    }
+  };
   return (
     <main>
-      <h2 className="text-center">{heading}</h2>
-      <Form>
-        <Form.Row className="align-items-center">
-          <Form.Group as={Col} md="4" lg="2" sm="12">
-            <Form.Label className="my-1 mr-2" htmlFor="inlineFormCustomSelectPref">
-              Occasion
-            </Form.Label>
-            <Form.Control
-              as="select"
-              className="my-1 mr-sm-2"
-              id="inlineFormCustomSelectPref"
-              custom
-            >
-              <option value="0">Choose...</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </Form.Control>
-          </Form.Group>
-          <Form.Group as={Col} md="4" lg="2" sm="12">
-            <Form.Label className="my-1 mr-2" htmlFor="inlineFormCustomSelectPref">
-              Theme Base
-            </Form.Label>
-            <Form.Control
-              as="select"
-              className="my-1 mr-sm-2"
-              id="inlineFormCustomSelectPref"
-              custom
-            >
-              <option value="0">Choose...</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </Form.Control>
-          </Form.Group>
-          <Form.Group as={Col} md="4" lg="2" sm="12">
-            <Form.Label className="my-1 mr-2" htmlFor="inlineFormCustomSelectPref">
-              Set up Place
-            </Form.Label>
-            <Form.Control
-              as="select"
-              className="my-1 mr-sm-2"
-              id="inlineFormCustomSelectPref"
-              custom
-            >
-              <option value="0">Choose...</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </Form.Control>
-          </Form.Group>
-          <Form.Group as={Col} md="4" lg="2" sm="12">
-            <Form.Label className="my-1 mr-2" htmlFor="inlineFormCustomSelectPref">
-              Budget
-            </Form.Label>
-            <Form.Control
-              as="select"
-              className="my-1 mr-sm-2"
-              id="inlineFormCustomSelectPref"
-              custom
-            >
-              <option value="0">Choose...</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </Form.Control>
-          </Form.Group>
-          <Form.Group as={Col} md="4" lg="2" sm="12">
-            <Form.Label className="my-1 mr-2" htmlFor="inlineFormCustomSelectPref">
-              Age group
-            </Form.Label>
-            <Form.Control
-              as="select"
-              className="my-1 mr-sm-2"
-              id="inlineFormCustomSelectPref"
-              custom
-            >
-              <option value="0">Choose...</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </Form.Control>
-          </Form.Group>
-          <Form.Group as={Col} md="4" lg="2" sm="12" className="text-center">
-            <Button type="submit" className="my-1">
-              Filter
-            </Button>
-          </Form.Group>
-        </Form.Row>
-      </Form>
+      <div className={style.responsive}>
+        <h2 className={style.headingSmall}>{heading}</h2>
+        <button className={style.filterButton} onClick={handleClick}>
+          Filters
+        </button>
+      </div>
+      <section className={style.filterArea} ref={filterRef}>
+        <div>
+          <label htmlFor="Occassion">Occassion</label>
+          <select className={`${style.select} ${style.occassion}`} name="Occassion">
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="mercedes">Mercedes</option>
+            <option value="audi">Audi</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="Theme">Theme</label>
+          <select
+            className={`${style.select} ${style.theme}`}
+            name="Theme"
+            onChange={() => console.log('Hello')}
+          >
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="mercedes">Mercedes</option>
+            <option value="audi">Audi</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="Set Up Place">Set Up Place</label>
+          <select className={`${style.select} ${style.place}`} name="Set Up Place">
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="mercedes">Mercedes</option>
+            <option value="audi">Audi</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="Budget">Budget</label>
+          <select className={`${style.select} ${style.budget}`} name="Budget">
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="mercedes">Mercedes</option>
+            <option value="audi">Audi</option>
+          </select>
+        </div>
+      </section>
+
+      <h2 className={style.headingLarge}>{heading}</h2>
+
       <Row>
         {partyData.map((pdata, i) => (
           <Col lg={3} md={6} sm={12} key={`party-${i}`} className="mx-auto">

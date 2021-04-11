@@ -1,7 +1,5 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Header from '../../components/Header';
-import Container from 'react-bootstrap/Container';
 import PartyPlace from '../../components/PartyPlace';
 import { fetchDesigns } from '../../server/design';
 import LayoutPartyPlace from '../../layouts/party-place';
@@ -12,12 +10,14 @@ const PartyPlaceTheme = () => {
   const [designData, setDesignData] = useState([]);
 
   const getDesigns = async () => {
+    
     let response = await fetchDesigns({
       theme: router.query.theme as string,
       occasion: router.query.occasion as string,
       place: router.query.place as string,
     });
     if (!response.error) {
+      console.log('res is', response);
       setDesignData(response);
     } else {
       // error handling hehre

@@ -39,7 +39,8 @@ const DESIGNS = (theme?: String, occasion?: String, place?: String, budget?: Str
   const apiCall = `${BASE_URL}/design${filterString}`;
   return apiCall;
 };
+const POSTER_DATA = () => `${BASE_URL}/poster`;
 
 const PARTY_PLACE = () => `${BASE_URL}/paplace`;
 
-export { PARTY_DATA, THEMES_DATA, REGISTRATION, DESIGNS, PARTY_PLACE };
+export { PARTY_DATA, THEMES_DATA, REGISTRATION, DESIGNS, PARTY_PLACE, POSTER_DATA };
