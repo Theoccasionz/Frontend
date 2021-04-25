@@ -1,0 +1,97 @@
+.navbar {
+  background: #f8f9fa;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.navHeading {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.panel {
+  padding: 1rem 0;
+}
+
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  background-color: #f8f9fa;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  border-right: 1px solid #ddd;
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: black;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  color: gray;
+}
+
+.sidebar .active::before {
+  content:" > "
+}
+
+.closeBtn {
+  border: none;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.closeBtn:focus,
+.closeBtn:hover {
+  outline: none;
+  color: gray;
+}
+
+.toggleBtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #ddd;
+  color: black;
+  padding: 10px 15px;
+  margin-left: 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.toggleBtn:hover {
+  background-color: #aaa;
+}
+
+.toggleBtn:focus {
+  outline: none;
+}
+
+.main {
+  transition: margin-left 0.5s;
+  padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidebar {
+    padding-top: 15px;
+  }
+  .sidebar a {
+    font-size: 18px;
+  }
+}
