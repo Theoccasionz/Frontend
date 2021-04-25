@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useForm } from 'react-hook-form';
+import { IMG_BASE_URL } from '../../constants';
 
 type Data = {
   Design_ImageUrls: string;
@@ -54,7 +55,7 @@ const Singleparty = (props: Props) => {
           className="w-100"
           height="400"
           loading="lazy"
-          src={data.Design_ImageUrls}
+          src={IMG_BASE_URL+data.Design_ImageUrls}
           alt={`${data.Design_Theme} ${data.Design_Occasion_Specialized}`}
         />
       </div>

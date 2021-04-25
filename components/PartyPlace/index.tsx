@@ -13,10 +13,10 @@ const PartyPlace: FC<Props> = ({ heading = 'Default', partyData }) => {
 
   const handleClick = () => {
     if (visible) {
-      filterRef.current.style.display = 'none';
+      document.getElementById('filter-area')?.classList.remove(style.mobile);
       setVisible(false);
     } else {
-      filterRef.current.style.display = 'block';
+      document.getElementById('filter-area')?.classList.add(style.mobile);
       setVisible(true);
     }
   };
@@ -28,7 +28,7 @@ const PartyPlace: FC<Props> = ({ heading = 'Default', partyData }) => {
           Filters
         </button>
       </div>
-      <section className={style.filterArea} ref={filterRef}>
+      <section className={style.filterArea} ref={filterRef} id="filter-area">
         <div>
           <label htmlFor="Occassion">Occassion</label>
           <select className={`${style.select} ${style.occassion}`} name="Occassion">

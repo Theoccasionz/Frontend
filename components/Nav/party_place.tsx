@@ -9,6 +9,14 @@ type Props = {
   posterData: Array<any>;
 };
 
+const responsive = {
+  360: { items: 1.5 },
+  500: { items: 2 },
+  700: { items: 3 },
+  900: { items: 4 },
+  1200: { items: 6 },
+};
+
 const PartyPlace: FC<Props> = ({ occasionData, placeData, themeData, posterData }) => {
   return (
     <main>
@@ -29,7 +37,7 @@ const PartyPlace: FC<Props> = ({ occasionData, placeData, themeData, posterData 
       </section>
       <section style={{ background: '#FFFFE0', padding: '1rem', margin: '0.75rem' }}>
         <h3 style={{ borderBottom: '1px solid #999999' }}>Place</h3>
-        <Carousel items={placeData} />
+        <Carousel items={placeData} responsive={responsive} />
       </section>
     </main>
   );

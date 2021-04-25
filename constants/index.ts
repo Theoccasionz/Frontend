@@ -1,5 +1,6 @@
 // const BASE_URL = 'http://localhost:8000/api';
 const BASE_URL = `http://18.217.74.84:3000/api`;
+const IMG_BASE_URL ='https://res.cloudinary.com/the-occassion/';
 const PARTY_DATA = (type: String) => `${BASE_URL}/${type}`;
 const THEMES_DATA = (theme: String) => `${BASE_URL}/parties?theme=${theme}`;
 const REGISTRATION = (type: 'vendor' | 'venue') => `${BASE_URL}/${type}`;
@@ -43,4 +44,4 @@ const POSTER_DATA = () => `${BASE_URL}/poster`;
 
 const PARTY_PLACE = () => `${BASE_URL}/paplace`;
 
-export { PARTY_DATA, THEMES_DATA, REGISTRATION, DESIGNS, PARTY_PLACE, POSTER_DATA };
+export { PARTY_DATA, THEMES_DATA, REGISTRATION, DESIGNS, PARTY_PLACE, POSTER_DATA, IMG_BASE_URL };
