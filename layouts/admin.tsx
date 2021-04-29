@@ -96,6 +96,7 @@ const LayoutAdmin: FC<Props> = ({ children }) => {
           <button className={style.toggleBtn} onClick={handleClick}>
             ☰
           </button>
+          {children}
         </section>
       </section>
     </main>
