@@ -1,16 +1,62 @@
-import { FC } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+import styles from '../../../styles/admin/add-design.module.css';
 
 const AddDesignForm: FC = () => {
   const { register, handleSubmit, errors } = useForm({ mode: 'onTouched' });
 
+  const [file, setFile] = useState<null | File>(null);
+  const [show, setShow] = useState(false);
+
   const onSubmit = (data: any, e: any) => {
     console.log(typeof data);
+    const {
+      theme_name,
+      theme_id,
+      vendor_id,
+      vendor_name,
+      occasion,
+      setup_place,
+      about,
+      rental_items,
+      non_rental_items,
+      about_service,
+      price,
+      setup_time,
+    } = data;
+
+    // const formData = new FormData(form)
+    // formData.append("Design_Name");
+    // formData.append("Design_Occasion_Specialized",);
+    // formData.append("Design_Occasion_Specialized_Image_url",);
+    // formData.append("Design_Theme",theme_name);
+    // formData.append("Design_Theme_Image_url",);
+    // formData.append("Design_Theme_Desc",);
+    // formData.append("Design_Setup_Place",setup_place);
+    // formData.append("Design_Setup_Place_Image_url",);
+    // formData.append("Design_Setup_Duration",);
+    // formData.append("Design_Inclusions",);
+    // formData.append("Design_Rentals",rental_items);
+    // formData.append("Design_Non_Rentals",non_rental_items);
+    // formData.append("Design_ImageUrls",);
+    // formData.append("Design_Price",price);
+    // formData.append("Design_Service_Desc",);
+    // formData.append("Vendor_Id",vendor_id);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    let tar = e.target;
+    let selFile = tar.files[0];
+    setFile(selFile);
+  };
+
+  const createPreviewURL = (file: File | null) => {
+    return URL.createObjectURL(file);
   };
 
   return (
@@ -134,8 +180,10 @@ const AddDesignForm: FC = () => {
               rows={3}
               name="about"
               placeholder="About theme"
-              ref={register()}
+              ref={register({ required: true })}
+              style={errors.about && { border: '1px solid red' }}
             />
+            {errors.about && <small className="text-danger">Required field</small>}
           </Col>
         </Form.Group>
         <Form.Group as={Row}>
@@ -148,8 +196,10 @@ const AddDesignForm: FC = () => {
               rows={3}
               name="rental_items"
               placeholder="Goggles, Clothing"
-              ref={register()}
+              ref={register({ required: true })}
+              style={errors.rental_items && { border: '1px solid red' }}
             />
+            {errors.rental_items && <small className="text-danger">Required field</small>}
           </Col>
         </Form.Group>
         <Form.Group as={Row}>
@@ -160,10 +210,12 @@ const AddDesignForm: FC = () => {
             <Form.Control
               as="textarea"
               rows={3}
-              name="non-rental_items"
+              name="non_rental_items"
               placeholder="Goggles, Clothing"
-              ref={register()}
+              ref={register({ required: true })}
+              style={errors.non_rental_items && { border: '1px solid red' }}
             />
+            {errors.non_rental_items && <small className="text-danger">Required field</small>}
           </Col>
         </Form.Group>
         <Form.Group as={Row}>
@@ -176,8 +228,10 @@ const AddDesignForm: FC = () => {
               rows={3}
               name="about_service"
               placeholder="About Service"
-              ref={register()}
+              ref={register({ required: true })}
+              style={errors.about_service && { border: '1px solid red' }}
             />
+            {errors.about_service && <small className="text-danger">Required field</small>}
           </Col>
         </Form.Group>
         <Form.Group as={Row}>
@@ -210,7 +264,47 @@ const AddDesignForm: FC = () => {
             {errors.setup_time && <small className="text-danger">Setup Time required</small>}
           </Col>
         </Form.Group>
+        <div className="text-right">
+          <label htmlFor="upload" className={styles.label}>
+            <input
+              type="file"
+              id="upload"
+              name="image_design"
+              hidden={true}
+              onChange={handleChange}
+              ref={register({ required: true })}
+            />
+            Upload Image
+          </label>
+          {errors.image_design && <small className="text-danger">Image is required</small>}
+          <button
+            className={`${styles.label}`}
+            disabled={!file}
+            onClick={() => setShow(true)}
+            type="button"
+          >
+            Preview Image
+          </button>
+        </div>
+        <div className="text-right">
+          <Button variant="primary" type="submit">
+            Save
+          </Button>
+          <Button variant="danger" type="button" className="ml-3">
+            Delete
+          </Button>
+        </div>
       </Form>
+      {show && (
+        <section className={styles.preview}>
+          <div className="text-center">
+            <img src={createPreviewURL(file)} className={styles.previewImage} />
+            <button className={styles.closeBtn} onClick={() => setShow(false)}>
+              Close
+            </button>
+          </div>
+        </section>
+      )}
     </Container>
   );
 };
