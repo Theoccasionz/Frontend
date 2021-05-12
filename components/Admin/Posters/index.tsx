@@ -88,8 +88,7 @@ const fakeData = [
 const PostersComp = () => {
   const tableRef = useRef();
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => {
+  const handleClose = () => {
     reset(
       {
         name: '',
@@ -104,8 +103,9 @@ const PostersComp = () => {
         keepErrors: false,
       }
     );
-    setShow(true);
+    setShow(false);
   };
+  const handleShow = () => setShow(true);
   const { register, handleSubmit, errors, reset } = useForm({ mode: 'onTouched' });
   const onSubmit = (data: any, e: any) => {
     console.log(typeof data);

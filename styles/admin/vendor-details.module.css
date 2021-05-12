@@ -1,0 +1,16 @@
+.addBtn {
+  background-color: white;
+  color: #52a4b9;
+  border: 1px solid #52a4b9;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.addBtn:hover,
+.addBtn:focus {
+  color: white;
+  background-color: #52a4b9;
+  outline: none;
+}
