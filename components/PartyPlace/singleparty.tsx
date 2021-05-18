@@ -55,15 +55,27 @@ const Singleparty = (props: Props) => {
           className="w-100"
           height="400"
           loading="lazy"
-          src={IMG_BASE_URL+data.Design_ImageUrls}
+          src={IMG_BASE_URL + data.Design_ImageUrls}
           alt={`${data.Design_Theme} ${data.Design_Occasion_Specialized}`}
         />
       </div>
       <div>
-        <h3 className="">{data.Design_Occasion_Specialized}</h3>
-        <h3 className="">{data.Design_Setup_Place}</h3>
-        <h3 className="">{data.Design_Theme}</h3>
-        <h3 className="">{data.Design_Setup_Duration}</h3>
+        <p className="mb-0">
+          <span className="h2">Occasion:</span>{' '}
+          <span style={{ fontSize: '1.75rem' }}>{data.Design_Occasion_Specialized}</span>
+        </p>
+        <p className="mb-0">
+          <span className="h2">Place:</span>{' '}
+          <span style={{ fontSize: '1.75rem' }}>{data.Design_Setup_Place}</span>
+        </p>
+        <p className="mb-0">
+          <span className="h2">Theme:</span>
+          <span style={{ fontSize: '1.75rem' }}>{data.Design_Theme}</span>
+        </p>
+        <p className="mb-0">
+          <span className="h2">Duration:</span>
+          <span style={{ fontSize: '1.75rem' }}>{data.Design_Setup_Duration}</span>
+        </p>
         <p
           className="d-flex justify-content-around align-items-center"
           style={{ flexWrap: 'wrap' }}
@@ -82,10 +94,10 @@ const Singleparty = (props: Props) => {
           <Modal.Title>{data.Design_Theme}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>{data.Design_Theme_Desc}</p>
-          <p>{data.Design_Rentals}</p>
-          <p>{data.Design_Non_Rentals}</p>
-          <p>{data.Design_Service_Desc}</p>
+          <p><strong>About Theme:</strong>{data.Design_Theme_Desc}</p>
+          <p><strong>Rental Items:</strong>{data.Design_Rentals}</p>
+          <p><strong>Non Rental Items:</strong>{data.Design_Non_Rentals}</p>
+          <p><strong>Service Description:</strong>{data.Design_Service_Desc}</p>
           <p className="d-flex justify-content-end">
             <p className="mx-2">{data.Design_Price}</p>
             <p className="mx-2">terms &amp; conditions</p>
