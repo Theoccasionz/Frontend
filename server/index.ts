@@ -35,6 +35,7 @@ const imageUpload = async (data: any) => {
   let response: any;
   try {
     response = await axios.post(IMG_UPLOAD_URL, data);
+    return response.data;
   } catch (error) {
     return { error: error?.response?.data || error?.message };
   }

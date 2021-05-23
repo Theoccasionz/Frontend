@@ -10,6 +10,7 @@ import { imageUpload } from '../../../server';
 
 import styles from '../../../styles/admin/posters.module.css';
 import 'rsuite-table/dist/css/rsuite-table.css';
+import { addPoster } from '../../../server/admin';
 
 const fakeData = [
   //   {
@@ -125,7 +126,21 @@ const PostersComp = () => {
     try {
       let response: any;
       response = await imageUpload(formData);
-      alert('Succesfuuly Uploaded');
+      let posterData = {
+        Poster_url: response[0].url,
+        Poster_Name: response[0].public_id,
+        Poster_Active: '1',
+        Poster_Upload_Date:
+          new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate(),
+        Poster_Upload_Time:
+          new Date().getHours().toString() +
+          ':' +
+          new Date().getMinutes() +
+          ':' +
+          new Date().getSeconds(),
+      };
+      let uploadResponse :any;
+      uploadResponse = await addPoster(posterData);
     } catch (error) {
       console.log(error);
       alert('ERROR IN UPLOADING');
