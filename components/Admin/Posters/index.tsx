@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import { imageUpload } from '../../../server';
 
 import styles from '../../../styles/admin/posters.module.css';
 import 'rsuite-table/dist/css/rsuite-table.css';
@@ -88,7 +89,10 @@ const fakeData = [
 const PostersComp = () => {
   const tableRef = useRef();
   const [show, setShow] = useState(false);
+  const [image, setImage] = useState<File | Null>(null);
+  const { register, handleSubmit, errors, reset } = useForm({ mode: 'onTouched' });
   const handleClose = () => {
+    setImage(null);
     reset(
       {
         name: '',
@@ -106,12 +110,26 @@ const PostersComp = () => {
     setShow(false);
   };
   const handleShow = () => setShow(true);
-  const { register, handleSubmit, errors, reset } = useForm({ mode: 'onTouched' });
-  const onSubmit = (data: any, e: any) => {
-    console.log(typeof data);
-    console.log(data);
+
+  const handleImageChange = (e: any) => {
+    setImage(e.target.files[0]);
+  };
+
+  const onSubmit = async (data: any, e: any) => {
     e.preventDefault();
 
+    let formData = new FormData();
+    formData.append('fileName', data.name);
+    formData.append('image', image);
+
+    try {
+      let response: any;
+      response = await imageUpload(formData);
+      alert('Succesfuuly Uploaded');
+    } catch (error) {
+      console.log(error);
+      alert('ERROR IN UPLOADING');
+    }
     handleClose();
   };
 
@@ -235,6 +253,7 @@ const PostersComp = () => {
                   name="image"
                   hidden={true}
                   ref={register({ required: true })}
+                  onChange={handleImageChange}
                 />
                 Upload Image
               </label>

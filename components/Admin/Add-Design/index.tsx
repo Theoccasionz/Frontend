@@ -51,6 +51,7 @@ const AddDesignForm: FC = () => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     let tar = e.target;
+    // @ts-ignore
     let selFile = tar.files[0];
     setFile(selFile);
   };

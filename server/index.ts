@@ -1,4 +1,4 @@
-import { PARTY_DATA } from '../constants';
+import { PARTY_DATA, IMG_UPLOAD_URL } from '../constants';
 import axios from 'axios';
 
 const fetchPartyThemes = async () => {
@@ -31,4 +31,13 @@ const fetchSpecialParties = async () => {
   }
 };
 
-export { fetchPartyThemes, fetchDJThemes, fetchSpecialParties };
+const imageUpload = async (data: any) => {
+  let response: any;
+  try {
+    response = await axios.post(IMG_UPLOAD_URL, data);
+  } catch (error) {
+    return { error: error?.response?.data || error?.message };
+  }
+};
+
+export { fetchPartyThemes, fetchDJThemes, fetchSpecialParties, imageUpload };
