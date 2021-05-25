@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Column, Cell, HeaderCell } from 'rsuite-table';
+import { getBookings } from '../../../server/admin';
 
 import 'rsuite-table/dist/css/rsuite-table.css';
 import style from '../../../styles/admin/booking-details.module.css';
@@ -56,6 +57,20 @@ const fakeData = [
 ];
 
 const BookingDetails = () => {
+  const fetchBookings = async () => {
+    try {
+      let response = await getBookings();
+      setData(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
+  const [data, setData] = useState([]);
+
   return (
     <div>
       <section className={style.filters}>
@@ -100,10 +115,10 @@ const BookingDetails = () => {
         </div>
       </section>
       <section>
-        <Table data={fakeData} height={300}>
+        <Table data={data} height={300}>
           <Column width={200} align="center" fixed resizable>
             <HeaderCell>Name</HeaderCell>
-            <Cell dataKey="name" />
+            <Cell dataKey="Booked_Design_Name" />
           </Column>
           <Column align="center" width={250}>
             <HeaderCell>Theme Name</HeaderCell>
@@ -111,11 +126,11 @@ const BookingDetails = () => {
           </Column>
           <Column align="center" width={250}>
             <HeaderCell>Booked Date</HeaderCell>
-            <Cell dataKey="bookedDate" />
+            <Cell dataKey="Booking_Date" />
           </Column>
           <Column align="center" width={300}>
             <HeaderCell>Set up Date</HeaderCell>
-            <Cell dataKey="setupDate" />
+            <Cell dataKey="Booking_Setup_DATE" />
           </Column>
           <Column align="center" width={300}>
             <HeaderCell>Price</HeaderCell>
