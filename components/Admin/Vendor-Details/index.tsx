@@ -11,7 +11,6 @@ import { addVendor, getVendors } from '../../../server/admin/index';
 
 import 'rsuite-table/dist/css/rsuite-table.css';
 import styles from '../../../styles/admin/vendor-details.module.css';
-import { type } from 'os';
 
 const VendorDetailsComp = () => {
   const [show, setShow] = useState(false);
