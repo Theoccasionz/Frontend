@@ -1,21 +1,37 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import styles from '../../../styles/admin/add-design.module.css';
+import { imageUpload } from '../../../server';
+import { addDesign } from '../../../server/admin';
+import { partyPlaceData } from '../../../server/party-place';
+
+const IMG_BASE_URL = 'http://res.cloudinary.com/the-occassion/';
 
 const AddDesignForm: FC = () => {
   const { register, handleSubmit, errors } = useForm({ mode: 'onTouched' });
 
   const [file, setFile] = useState<null | File>(null);
+  const [occasionSpecializedImage, setOccasionSpecializedImage] = useState<null | File>(null);
+  const [setupPlaceImage, setSetupPlaceImage] = useState<null | File>(null);
+
+  const [occasions, setOccasions] = useState([]);
+  const [places, setPlaces] = useState([]);
+  const [themes, setThemes] = useState([]);
+
+  const [occasionChosen, setOccasionChosen] = useState('');
+  const [placeChosen, setPlaceChosen] = useState('');
+  const [themeChosen, setThemeChosen] = useState('');
   const [show, setShow] = useState(false);
 
-  const onSubmit = (data: any, e: any) => {
-    console.log(typeof data);
-    const {
+  const onSubmit = async (data: any, e: any) => {
+    console.log(data);
+    e.preventDefault();
+    let {
+      design_name,
       theme_name,
       theme_id,
       vendor_id,
@@ -28,41 +44,229 @@ const AddDesignForm: FC = () => {
       about_service,
       price,
       setup_time,
+      design_inclusions,
+      custom_occassion_name,
+      custom_theme_name,
+      custom_place_name,
     } = data;
 
-    // const formData = new FormData(form)
-    // formData.append("Design_Name");
-    // formData.append("Design_Occasion_Specialized",);
-    // formData.append("Design_Occasion_Specialized_Image_url",);
-    // formData.append("Design_Theme",theme_name);
-    // formData.append("Design_Theme_Image_url",);
-    // formData.append("Design_Theme_Desc",);
-    // formData.append("Design_Setup_Place",setup_place);
-    // formData.append("Design_Setup_Place_Image_url",);
-    // formData.append("Design_Setup_Duration",);
-    // formData.append("Design_Inclusions",);
-    // formData.append("Design_Rentals",rental_items);
-    // formData.append("Design_Non_Rentals",non_rental_items);
-    // formData.append("Design_ImageUrls",);
-    // formData.append("Design_Price",price);
-    // formData.append("Design_Service_Desc",);
-    // formData.append("Vendor_Id",vendor_id);
+    try {
+      let image_url_design_theme: any;
+      if (themeChosen === 'Add Value') {
+        let imageFormData = new FormData();
+        imageFormData.append('fileName', design_name);
+        imageFormData.append('image', file as string | Blob);
+
+        let response: any;
+        response = await imageUpload(imageFormData);
+        image_url_design_theme = response[0].url.replace(IMG_BASE_URL, '');
+        theme_name = custom_theme_name;
+      } else {
+        image_url_design_theme = themeChosen;
+        theme_name = findChosenName(themeChosen, themes);
+      }
+
+      let occasion_specialized_image_url: any;
+      if (occasionChosen === 'Add Value') {
+        let occassionImageFormData = new FormData();
+        occassionImageFormData.append('fileName', occasion);
+        occassionImageFormData.append('image', occasionSpecializedImage as string | Blob);
+
+        let occasionImageresponse: any;
+        occasionImageresponse = await imageUpload(occassionImageFormData);
+        occasion_specialized_image_url = occasionImageresponse[0].url.replace(IMG_BASE_URL, '');
+        occasion = custom_occassion_name;
+      } else {
+        occasion_specialized_image_url = occasionChosen;
+        occasion = findChosenName(occasionChosen, occasions);
+      }
+
+      let setup_place_image_url: any;
+      if (placeChosen === 'Add Value') {
+        let setupPlaceImageFormData = new FormData();
+        setupPlaceImageFormData.append('fileName', setup_place);
+        setupPlaceImageFormData.append('image', setupPlaceImage as string | Blob);
+
+        let setupImageResponse: any;
+        setupImageResponse = await imageUpload(setupPlaceImageFormData);
+        setup_place_image_url = setupImageResponse[0].url.replace(IMG_BASE_URL, '');
+        setup_place = custom_place_name;
+      } else {
+        setup_place_image_url = placeChosen;
+        setup_place = findChosenName(placeChosen, places);
+      }
+
+      const ImageUrlsArray: string[] = [image_url_design_theme];
+      const formData = new FormData();
+
+      let postalData = {
+        Design_Name: design_name,
+        Design_Occasion_Specialized: occasion,
+        Design_Occasion_Specialized_Image_url: occasion_specialized_image_url,
+        Design_Theme: theme_name,
+        Design_Theme_Image_url: image_url_design_theme,
+        Design_Theme_Desc: about,
+        Design_Setup_Place: setup_place,
+        Design_Setup_Place_Image_url: setup_place_image_url,
+        Design_Setup_Duration: setup_time,
+        Design_Inclusions: design_inclusions,
+        Design_Rentals: rental_items,
+        Design_Non_Rentals: non_rental_items,
+        Design_Price: price,
+        Design_Service_Desc: about_service,
+        Vendor_Id: vendor_id,
+        Design_ImageUrls_Array: ImageUrlsArray,
+      };
+
+      // formData.append('Design_Name', design_name);
+      // formData.append('Design_Occasion_Specialized', occasion);
+      // formData.append('Design_Occasion_Specialized_Image_url', occasion_specialized_image_url);
+      // formData.append('Design_Theme', theme_name);
+      // formData.append('Design_Theme_Image_url', image_url_design_theme);
+      // formData.append('Design_Theme_Desc', about);
+      // formData.append('Design_Setup_Place', setup_place);
+      // formData.append('Design_Setup_Place_Image_url', setup_place_image_url);
+      // formData.append('Design_Setup_Duration', setup_time);
+      // formData.append('Design_Inclusions', design_inclusions);
+      // formData.append('Design_Rentals', rental_items);
+      // formData.append('Design_Non_Rentals', non_rental_items);
+      // //@ ts-ignore
+      // formData.append('Design_ImageUrls_Array', JSON.stringify(ImageUrlsArray));
+      // formData.append('Design_Price', price);
+      // formData.append('Design_Service_Desc', about_service);
+      // formData.append('Vendor_Id', vendor_id);
+
+      console.log('postalData', postalData);
+      return ;
+
+      let addDesignRespose = await addDesign(formData);
+      if (addDesignRespose?.error) {
+        throw new Error(addDesignRespose?.error);
+      } else {
+        alert('SUCCESFUL UPLOAD');
+      }
+    } catch (error) {
+      alert('ERROR');
+      console.error(error);
+    }
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>, updateFunc: (file: File) => void) => {
     let tar = e.target;
     // @ts-ignore
     let selFile = tar.files[0];
-    setFile(selFile);
+    updateFunc(selFile);
   };
 
   const createPreviewURL = (file: File | null) => {
     return URL.createObjectURL(file);
   };
 
+  const fetchPartyData = async () => {
+    let response: any;
+    try {
+      response = await partyPlaceData();
+      let occasionsArray: any[] = [];
+      console.log(response);
+      response.occassion.forEach((occ: any) => {
+        let found = occasionsArray.some(o => o.name === occ.Design_Occasion_Specialized);
+        if (!found) {
+          occasionsArray.push({
+            name: occ.Design_Occasion_Specialized,
+            value: occ.Design_Occasion_Specialized_Image_url,
+          });
+        }
+      });
+      occasionsArray.push({
+        name: 'Add Value',
+        value: 'Add Value',
+      });
+
+      let placesArray: any[] = [];
+
+      response.places.forEach((place: any) => {
+        let found = placesArray.some(o => o.name === place.Design_Setup_Place);
+        if (!found) {
+          placesArray.push({
+            name: place.Design_Setup_Place,
+            value: place.Design_Setup_Place_Image_url,
+          });
+        }
+      });
+      placesArray.push({
+        name: 'Add Value',
+        value: 'Add Value',
+      });
+
+      let themesArray: any[] = [];
+      response.themes.forEach((theme: any) => {
+        let found = themesArray.some(o => o.name === theme.Design_Theme);
+        if (!found) {
+          themesArray.push({
+            name: theme.Design_Theme,
+            value: theme.Design_Theme_Image_url,
+          });
+        }
+      });
+      themesArray.push({ name: 'Add Value', value: 'Add Value' });
+
+      //@ts-ignore
+      setOccasions(occasionsArray);
+      setOccasionChosen(occasionsArray[0].value);
+
+      // @ts-ignore
+      setThemes(themesArray);
+      setThemeChosen(themesArray[0].value);
+
+      // @ts-ignore
+      setPlaces(placesArray);
+      setPlaceChosen(placesArray[0].value);
+
+      if (response.error) {
+        throw new Error(response.error);
+      }
+    } catch (error) {}
+  };
+
+  const renderOptions = (data: any[]) => {
+    return data.map(d => (
+      <option value={d.value} key={d.value}>
+        {d.name}
+      </option>
+    ));
+  };
+
+  const findChosenName = (value: string, data: any[]) => {
+    let result = data.find(d => d.value === value);
+    return result.name;
+  };
+
+  const handleOptionChange = (e: any, updateFunc: (arg: any) => void) => {
+    updateFunc(e.target.value);
+  };
+
+  useEffect(() => {
+    fetchPartyData();
+  }, []);
+
   return (
     <Container fluid>
       <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form.Group as={Row}>
+          <Form.Label column md={4} lg={2}>
+            Design Name
+          </Form.Label>
+          <Col md={8} lg={4}>
+            <Form.Control
+              type="text"
+              name="design_name"
+              placeholder="Design Name"
+              ref={register({ required: true })}
+              style={errors.design_name && { border: '1px solid red' }}
+            />
+            {errors.design_name && <small className="text-danger">Theme Name required</small>}
+          </Col>
+        </Form.Group>
         <Form.Group as={Row}>
           <Form.Label column md={4} lg={2}>
             Theme Name
@@ -119,6 +323,7 @@ const AddDesignForm: FC = () => {
             {errors.vendor_id && <small className="text-danger">Vendor ID required</small>}
           </Col>
         </Form.Group>
+
         <Form.Group as={Row}>
           <Form.Label column md={4} lg={2}>
             Occasion
@@ -129,13 +334,49 @@ const AddDesignForm: FC = () => {
               name="occasion"
               ref={register({ required: true })}
               style={errors.occasion && { border: '1px solid red' }}
+              onChange={e => handleOptionChange(e, setOccasionChosen)}
             >
-              {[1, 2, 3, 4, 5].map(d => (
+              {/* {[1, 2, 3, 4, 5].map(d => (
                 <option key={`occasion-${d}`}>{d}</option>
-              ))}
+              ))} */}
+              {renderOptions(occasions)}
             </Form.Control>
             {errors.occasion && <small className="text-danger">Occasion required</small>}
           </Col>
+        </Form.Group>
+        {occasionChosen === 'Add Value' && (
+          <Form.Group as={Row}>
+            <Form.Label column md={4} lg={2}>
+              New Occasion Name
+            </Form.Label>
+            <Col md={8} lg={4}>
+              <Form.Control
+                type="text"
+                name="custom_occassion_name"
+                placeholder="Name"
+                ref={register({ required: occasionChosen === 'Add Value' })}
+                style={errors.custom_occassion_name && { border: '1px solid red' }}
+              />
+              {errors.custom_occasion_name && <small className="text-danger">Required Field</small>}
+            </Col>
+            <Form.Label column md={4} lg={2}>
+              Occasion Specialized
+            </Form.Label>
+            <Col md={8} lg={4}>
+              <input
+                type="file"
+                id="occasion_upload"
+                name="occasion_specialized"
+                onChange={e => handleChange(e, setOccasionSpecializedImage)}
+                ref={register({ required: true })}
+              />
+              {errors.occasion_specialized && (
+                <small className="text-danger">Image is required</small>
+              )}
+            </Col>
+          </Form.Group>
+        )}
+        <Form.Group as={Row}>
           <Form.Label column md={4} lg={2}>
             Setup Place
           </Form.Label>
@@ -145,14 +386,46 @@ const AddDesignForm: FC = () => {
               name="setup_place"
               ref={register({ required: true })}
               style={errors.setup_place && { border: '1px solid red' }}
+              onChange={e => handleOptionChange(e, setPlaceChosen)}
             >
-              {[1, 2, 3, 4, 5].map(d => (
+              {/* {[1, 2, 3, 4, 5].map(d => (
                 <option key={`setup_place-${d}`}>{d}</option>
-              ))}
+              ))} */}
+              {renderOptions(places)}
             </Form.Control>
             {errors.setup_place && <small className="text-danger">Setup Place required</small>}
           </Col>
         </Form.Group>
+        {placeChosen === 'Add Value' && (
+          <Form.Group as={Row}>
+            <Form.Label column md={4} lg={2}>
+              New Setup Place Name
+            </Form.Label>
+            <Col md={8} lg={4}>
+              <Form.Control
+                type="text"
+                name="custom_place_name"
+                placeholder="Name"
+                ref={register({ required: placeChosen === 'Add Value' })}
+                style={errors.custom_place_name && { border: '1px solid red' }}
+              />
+              {errors.custom_place_name && <small className="text-danger">Required Field</small>}
+            </Col>
+            <Form.Label column md={4} lg={2}>
+              Setup Place Image
+            </Form.Label>
+            <Col md={8} lg={4}>
+              <input
+                type="file"
+                id="setup_upload"
+                name="setup_place_image"
+                onChange={e => handleChange(e, setSetupPlaceImage)}
+                ref={register({ required: true })}
+              />
+              {errors.setup_place_image && <small className="text-danger">Image is required</small>}
+            </Col>
+          </Form.Group>
+        )}
         <Form.Group as={Row}>
           <Form.Label column md={4} lg={2}>
             Theme Base
@@ -163,14 +436,43 @@ const AddDesignForm: FC = () => {
               name="theme_base"
               ref={register({ required: true })}
               style={errors.theme_base && { border: '1px solid red' }}
+              onChange={e => handleOptionChange(e, setThemeChosen)}
             >
-              {[1, 2, 3, 4, 5].map(d => (
-                <option key={`theme_base-${d}`}>{d}</option>
-              ))}
+              {renderOptions(themes)}
             </Form.Control>
             {errors.theme_base && <small className="text-danger">Theme Base required</small>}
           </Col>
         </Form.Group>
+        {themeChosen === 'Add Value' && (
+          <Form.Group as={Row}>
+            <Form.Label column md={4} lg={2}>
+              New Theme Base Name
+            </Form.Label>
+            <Col md={8} lg={4}>
+              <Form.Control
+                type="text"
+                name="custom_theme_name"
+                placeholder="Name"
+                ref={register({ required: themeChosen === 'Add Value' })}
+                style={errors.custom_theme_name && { border: '1px solid red' }}
+              />
+              {errors.custom_theme_name && <small className="text-danger">Required Field</small>}
+            </Col>
+            <Form.Label column md={4} lg={2}>
+              Theme Image
+            </Form.Label>
+            <Col md={8} lg={4}>
+              <input
+                type="file"
+                id="upload"
+                name="image_design"
+                onChange={e => handleChange(e, setFile)}
+                ref={register({ required: true })}
+              />
+              {errors.image_design && <small className="text-danger">Required field</small>}
+            </Col>
+          </Form.Group>
+        )}
         <Form.Group as={Row}>
           <Form.Label column md={4} lg={2}>
             About theme
@@ -185,6 +487,22 @@ const AddDesignForm: FC = () => {
               style={errors.about && { border: '1px solid red' }}
             />
             {errors.about && <small className="text-danger">Required field</small>}
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row}>
+          <Form.Label column md={4} lg={2}>
+            Design Inclusions
+          </Form.Label>
+          <Col md={8} lg={4}>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              name="design_inclusions"
+              placeholder="Design Inclusions"
+              ref={register({ required: true })}
+              style={errors.design_inclusions && { border: '1px solid red' }}
+            />
+            {errors.design_inclusions && <small className="text-danger">Required field</small>}
           </Col>
         </Form.Group>
         <Form.Group as={Row}>
@@ -265,14 +583,14 @@ const AddDesignForm: FC = () => {
             {errors.setup_time && <small className="text-danger">Setup Time required</small>}
           </Col>
         </Form.Group>
-        <div className="text-right">
+        {/* <div className="text-right">
           <label htmlFor="upload" className={styles.label}>
             <input
               type="file"
               id="upload"
               name="image_design"
               hidden={true}
-              onChange={handleChange}
+              onChange={e => handleChange(e, setFile)}
               ref={register({ required: true })}
             />
             Upload Image
@@ -286,7 +604,7 @@ const AddDesignForm: FC = () => {
           >
             Preview Image
           </button>
-        </div>
+        </div> */}
         <div className="text-right">
           <Button variant="primary" type="submit">
             Save
@@ -296,7 +614,7 @@ const AddDesignForm: FC = () => {
           </Button>
         </div>
       </Form>
-      {show && (
+      {/* {show && (
         <section className={styles.preview}>
           <div className="text-center">
             <img src={createPreviewURL(file)} className={styles.previewImage} />
@@ -305,7 +623,7 @@ const AddDesignForm: FC = () => {
             </button>
           </div>
         </section>
-      )}
+      )} */}
     </Container>
   );
 };

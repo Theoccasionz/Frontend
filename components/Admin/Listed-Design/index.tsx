@@ -1,54 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Table, Column, Cell, HeaderCell } from 'rsuite-table';
+import { getDesigns } from '../../../server/admin';
 
 import 'rsuite-table/dist/css/rsuite-table.css';
 import style from '../../../styles/admin/listed-design.module.css';
 
-const fakeData = [
-  {
-    ThemeName: 'Random',
-    ThemeID: Math.floor(Math.random() * 10000000).toString(),
-    VendorID: Math.floor(Math.random() * 10000000).toString(),
-    Price: Math.floor(Math.random() * 10000000).toString(),
-    Occassion: 'Random',
-    SetupPlace: 'Random',
-    ThemeBase: 'Random',
-    SetupTheme: 'Random',
-  },
-  {
-    ThemeName: 'Random',
-    ThemeID: Math.floor(Math.random() * 10000000).toString(),
-    VendorID: Math.floor(Math.random() * 10000000).toString(),
-    Price: Math.floor(Math.random() * 10000000).toString(),
-    Occassion: 'Random',
-    SetupPlace: 'Random',
-    ThemeBase: 'Random',
-    SetupTheme: 'Random',
-  },
-  {
-    ThemeName: 'Random',
-    ThemeID: Math.floor(Math.random() * 10000000).toString(),
-    VendorID: Math.floor(Math.random() * 10000000).toString(),
-    Price: Math.floor(Math.random() * 10000000).toString(),
-    Occassion: 'Random',
-    SetupPlace: 'Random',
-    ThemeBase: 'Random',
-    SetupTheme: 'Random',
-  },
-  {
-    ThemeName: 'Random',
-    ThemeID: Math.floor(Math.random() * 10000000).toString(),
-    VendorID: Math.floor(Math.random() * 10000000).toString(),
-    Price: Math.floor(Math.random() * 10000000).toString(),
-    Occassion: 'Random',
-    SetupPlace: 'Random',
-    ThemeBase: 'Random',
-    SetupTheme: 'Random',
-  },
-];
 
 const ListedDesign = () => {
+  const fetchBookings = async () => {
+    try {
+      let response = await getDesigns();
+      console.log(response);
+      if (response.error) {
+        throw new Error(response.error);
+      }
+      setData(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
+  const [data, setData] = useState([]);
   return (
     <main className="mt-3">
       <section className={style.filters}>
@@ -123,34 +99,34 @@ const ListedDesign = () => {
         </div>
       </section>
       <section className={`mt-4`}>
-        <Table data={fakeData} height={300}>
+        <Table data={data} height={300}>
           <Column width={200} align="center" fixed resizable>
-            <HeaderCell>Theme Name</HeaderCell>
-            <Cell dataKey="ThemeName" />
+            <HeaderCell>Design Name</HeaderCell>
+            <Cell dataKey="Design_Name" />
           </Column>
           <Column align="center" width={250}>
-            <HeaderCell>Theme ID</HeaderCell>
-            <Cell dataKey="ThemeID" />
+            <HeaderCell>Design ID</HeaderCell>
+            <Cell dataKey="Design_Id" />
           </Column>
           <Column align="center" width={250}>
             <HeaderCell>Vendor ID</HeaderCell>
-            <Cell dataKey="VendorID" />
+            <Cell dataKey="Vendor_Id" />
           </Column>
           <Column align="center" width={300}>
             <HeaderCell>Price</HeaderCell>
-            <Cell dataKey="Price" />
+            <Cell dataKey="Design_Price" />
           </Column>
           <Column align="center" width={300}>
             <HeaderCell>Set up Place</HeaderCell>
-            <Cell dataKey="SetupPlace" />
+            <Cell dataKey="Design_Setup_Place" />
           </Column>
           <Column align="center" width={300}>
             <HeaderCell>Theme Base</HeaderCell>
-            <Cell dataKey="ThemeBase" />
+            <Cell dataKey="Design_Theme" />
           </Column>
           <Column align="center" width={300}>
-            <HeaderCell>Set up Theme</HeaderCell>
-            <Cell dataKey="SetupTheme" />
+            <HeaderCell>Set up Duration</HeaderCell>
+            <Cell dataKey="Design_Setup_Duration" />
           </Column>
           <Column width={200} align="center">
             <HeaderCell>Action</HeaderCell>

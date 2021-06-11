@@ -47,7 +47,11 @@ const PARTY_PLACE = () => `${BASE_URL}/paplace`;
 
 const GET_BOOKINGS = () => `${BASE_URL}/booking`;
 
-const ADD_POSTER = () => `${BASE_URL}/poster`;
+const POSTERS_API = () => `${BASE_URL}/poster`;
+
+const DESIGNS_API = () => `${BASE_URL}/design`;
+
+const VENDORS_API = () => `${BASE_URL}/vendor`;
 
 export {
   PARTY_DATA,
@@ -58,6 +62,8 @@ export {
   POSTER_DATA,
   IMG_BASE_URL,
   IMG_UPLOAD_URL,
-  ADD_POSTER,
+  POSTERS_API,
   GET_BOOKINGS,
+  DESIGNS_API,
+  VENDORS_API,
 };

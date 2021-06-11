@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Table, Column, Cell, HeaderCell } from 'rsuite-table';
 import Modal from 'react-bootstrap/Modal';
 import { useForm } from 'react-hook-form';
@@ -10,7 +10,7 @@ import { imageUpload } from '../../../server';
 
 import styles from '../../../styles/admin/posters.module.css';
 import 'rsuite-table/dist/css/rsuite-table.css';
-import { addPoster } from '../../../server/admin';
+import { getPosters, addPoster } from '../../../server/admin';
 
 const fakeData = [
   //   {
@@ -88,9 +88,9 @@ const fakeData = [
 ];
 
 const PostersComp = () => {
-  const tableRef = useRef();
   const [show, setShow] = useState(false);
-  const [image, setImage] = useState<File | Null>(null);
+  const [image, setImage] = useState<File | null>(null);
+  const [data, setData] = useState([]);
   const { register, handleSubmit, errors, reset } = useForm({ mode: 'onTouched' });
   const handleClose = () => {
     setImage(null);
@@ -116,19 +116,33 @@ const PostersComp = () => {
     setImage(e.target.files[0]);
   };
 
+  const fetchPosters = async () => {
+    try {
+      let response = await getPosters();
+      console.log(response);
+      setData(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosters();
+  }, []);
+
   const onSubmit = async (data: any, e: any) => {
     e.preventDefault();
 
     let formData = new FormData();
     formData.append('fileName', data.name);
-    formData.append('image', image);
+    formData.append('image', image as File);
 
     try {
       let response: any;
       response = await imageUpload(formData);
       let posterData = {
         Poster_url: response[0].url,
-        Poster_Name: response[0].public_id,
+        Poster_Name: data.name,
         Poster_Active: '1',
         Poster_Upload_Date:
           new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate(),
@@ -139,7 +153,7 @@ const PostersComp = () => {
           ':' +
           new Date().getSeconds(),
       };
-      let uploadResponse :any;
+      let uploadResponse: any;
       uploadResponse = await addPoster(posterData);
     } catch (error) {
       console.log(error);
@@ -158,18 +172,29 @@ const PostersComp = () => {
             Add
           </button>
         </div>
-        <Table data={fakeData} height={300}>
+        <Table data={data} height={300}>
           <Column width={100} align="center" fixed resizable>
             <HeaderCell>ID</HeaderCell>
-            <Cell dataKey="id" />
+            <Cell dataKey="Poster_Id" />
           </Column>
           <Column align="center" flexGrow={1}>
             <HeaderCell>Name</HeaderCell>
-            <Cell dataKey="name" />
+            <Cell dataKey="Poster_Name" />
           </Column>
           <Column align="center" flexGrow={1}>
             <HeaderCell>Date</HeaderCell>
-            <Cell dataKey="date" />
+            <Cell title="yyyy-mm-dd">
+              {rowData => {
+                const { Poster_Upload_Date } = rowData;
+                const uploadDate =
+                  new Date(Poster_Upload_Date).getFullYear() +
+                  '-' +
+                  new Date(Poster_Upload_Date).getMonth() +
+                  '-' +
+                  new Date(Poster_Upload_Date).getDate();
+                return <span>{uploadDate}</span>;
+              }}
+            </Cell>
           </Column>
           <Column width={200} align="center">
             <HeaderCell>Action</HeaderCell>
@@ -203,18 +228,29 @@ const PostersComp = () => {
             Add
           </button>
         </div>
-        <Table data={fakeData} height={300}>
+        <Table data={data} height={300}>
           <Column width={100} align="center" fixed resizable>
             <HeaderCell>ID</HeaderCell>
-            <Cell dataKey="id" />
+            <Cell dataKey="Poster_Id" />
           </Column>
           <Column align="center" flexGrow={1}>
             <HeaderCell>Name</HeaderCell>
-            <Cell dataKey="name" />
+            <Cell dataKey="Poster_Name" />
           </Column>
           <Column align="center" flexGrow={1}>
             <HeaderCell>Date</HeaderCell>
-            <Cell dataKey="date" />
+            <Cell title="yyyy-mm-dd">
+              {rowData => {
+                const { Poster_Upload_Date } = rowData;
+                const uploadDate =
+                  new Date(Poster_Upload_Date).getFullYear() +
+                  '-' +
+                  new Date(Poster_Upload_Date).getMonth() +
+                  '-' +
+                  new Date(Poster_Upload_Date).getDate();
+                return <span>{uploadDate}</span>;
+              }}
+            </Cell>
           </Column>
           <Column width={200} align="center">
             <HeaderCell>Action</HeaderCell>

@@ -5,57 +5,6 @@ import { getBookings } from '../../../server/admin';
 import 'rsuite-table/dist/css/rsuite-table.css';
 import style from '../../../styles/admin/booking-details.module.css';
 
-const fakeData = [
-  {
-    name: 'Random',
-    themeName: 'Random',
-    vendorID: Math.floor(Math.random() * 10000000).toString(),
-    bookedDate: new Date().toISOString(),
-    setupDate: new Date().toISOString(),
-    price: Math.floor(Math.random() * 10000000).toString(),
-    themeBase: 'Random',
-    occassion: 'Random',
-    setupPlace: 'random',
-    status: 'lets see',
-  },
-  {
-    name: 'Random',
-    themeName: 'Random',
-    vendorID: Math.floor(Math.random() * 10000000).toString(),
-    bookedDate: new Date().toISOString(),
-    setupDate: new Date().toISOString(),
-    price: Math.floor(Math.random() * 10000000).toString(),
-    themeBase: 'Random',
-    occassion: 'Random',
-    setupPlace: 'random',
-    status: 'lets see',
-  },
-  {
-    name: 'Random',
-    themeName: 'Random',
-    vendorID: Math.floor(Math.random() * 10000000).toString(),
-    bookedDate: new Date().toISOString(),
-    setupDate: new Date().toISOString(),
-    price: Math.floor(Math.random() * 10000000).toString(),
-    themeBase: 'Random',
-    occassion: 'Random',
-    setupPlace: 'random',
-    status: 'lets see',
-  },
-  {
-    name: 'Random',
-    themeName: 'Random',
-    vendorID: Math.floor(Math.random() * 10000000).toString(),
-    bookedDate: new Date().toISOString(),
-    setupDate: new Date().toISOString(),
-    price: Math.floor(Math.random() * 10000000).toString(),
-    themeBase: 'Random',
-    occassion: 'Random',
-    setupPlace: 'random',
-    status: 'lets see',
-  },
-];
-
 const BookingDetails = () => {
   const fetchBookings = async () => {
     try {
@@ -120,33 +69,21 @@ const BookingDetails = () => {
             <HeaderCell>Name</HeaderCell>
             <Cell dataKey="Booked_Design_Name" />
           </Column>
-          <Column align="center" width={250}>
+          <Column align="center" width={350}>
             <HeaderCell>Theme Name</HeaderCell>
             <Cell dataKey="themeName" />
           </Column>
-          <Column align="center" width={250}>
+          <Column align="center" width={350}>
             <HeaderCell>Booked Date</HeaderCell>
             <Cell dataKey="Booking_Date" />
           </Column>
-          <Column align="center" width={300}>
+          <Column align="center" width={400}>
             <HeaderCell>Set up Date</HeaderCell>
             <Cell dataKey="Booking_Setup_DATE" />
           </Column>
-          <Column align="center" width={300}>
+          <Column align="center" width={400}>
             <HeaderCell>Price</HeaderCell>
             <Cell dataKey="price" />
-          </Column>
-          <Column align="center" width={300}>
-            <HeaderCell>Theme Base</HeaderCell>
-            <Cell dataKey="themeBase" />
-          </Column>
-          <Column align="center" width={300}>
-            <HeaderCell>Occassion</HeaderCell>
-            <Cell dataKey="occassion" />
-          </Column>
-          <Column align="center" width={300}>
-            <HeaderCell>Set up Place</HeaderCell>
-            <Cell dataKey="setupPlace" />
           </Column>
           <Column width={200} align="center">
             <HeaderCell>Action</HeaderCell>
