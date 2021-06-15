@@ -209,8 +209,8 @@ const ListedDesign = () => {
             <Cell>
               {rowData => {
                 return (
-                  <Link href={`/admin/add-design`}>
-                    <a href={`/admin/add-design`}>Edit</a>
+                  <Link href={`/admin/add-design?designid=${rowData.Design_Id}`}>
+                    <a href={`/admin/add-design?designid=${rowData.Design_Id}`}>Edit</a>
                   </Link>
                 );
               }}

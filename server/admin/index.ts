@@ -51,6 +51,26 @@ const getDesigns = async () => {
   }
 };
 
+const getSingleDesign = async (id: Number) => {
+  let response: any;
+  try {
+    response = await axios.get(DESIGNS_API(id));
+    return response.data;
+  } catch (error) {
+    throw new Error(error?.response?.data || error?.message);
+  }
+};
+
+const updateSingleDesign = async (id: any, data: any) => {
+  let response;
+  try {
+    response = await axios.put(DESIGNS_API(id), data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error?.response?.data || error?.message);
+  }
+};
+
 const getVendors = async () => {
   let response: any;
   try {
@@ -71,4 +91,14 @@ const addVendor = async (data: any) => {
   }
 };
 
-export { getPosters, addPoster, getBookings, addDesign, getDesigns, getVendors, addVendor };
+export {
+  getPosters,
+  addPoster,
+  getBookings,
+  addDesign,
+  getDesigns,
+  getVendors,
+  addVendor,
+  getSingleDesign,
+  updateSingleDesign,
+};

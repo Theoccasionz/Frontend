@@ -1,18 +1,20 @@
 import { ChangeEvent, FC, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import { imageUpload } from '../../../server';
-import { addDesign } from '../../../server/admin';
+import { addDesign, getSingleDesign, updateSingleDesign } from '../../../server/admin';
 import { partyPlaceData } from '../../../server/party-place';
 
 const IMG_BASE_URL = 'http://res.cloudinary.com/the-occassion/';
 
 const AddDesignForm: FC = () => {
-  const { register, handleSubmit, errors } = useForm({ mode: 'onTouched' });
+  const { register, handleSubmit, errors, reset } = useForm({ mode: 'onTouched' });
+  const router = useRouter();
 
   const [file, setFile] = useState<null | File>(null);
   const [occasionSpecializedImage, setOccasionSpecializedImage] = useState<null | File>(null);
@@ -27,6 +29,56 @@ const AddDesignForm: FC = () => {
   const [placeChosen, setPlaceChosen] = useState('');
   const [themeChosen, setThemeChosen] = useState('');
   const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (router.asPath !== router.route) {
+      if (router.query.designid) {
+        fetchSingleDesign(parseInt(router.query.designid as string));
+      } else {
+        fetchPartyData();
+      }
+    }
+  }, [router]);
+
+  const fetchSingleDesign = async (id: Number) => {
+    try {
+      await fetchPartyData();
+      let response = await getSingleDesign(id);
+      response = response[0];
+      reset(
+        {
+          design_name: response.Design_Name,
+          design_id: response.Design_Id,
+          vendor_id: response.Vendor_Id,
+          about: response.Design_Theme_Desc,
+          rental_items: response.Design_Rentals,
+          non_rental_items: response.Design_Non_Rentals,
+          setup_time: response.Design_Setup_Duration,
+          price: response.Design_Price,
+          about_service: response.Design_Service_Desc,
+          design_inclusions: response.Design_Inclusions,
+          occasion: response.Design_Occasion_Specialized_Image_url,
+          theme_name: response.Design_Theme_Image_url,
+          setup_place: response.Design_Setup_Place_Image_url,
+        },
+        {
+          keepDirty: false,
+          keepIsSubmitted: false,
+          keepTouched: false,
+          keepIsValid: false,
+          keepSubmitCount: false,
+          keepErrors: false,
+        }
+      );
+      setOccasionSpecializedImage(response.Design_Occasion_Specialized_Image_url);
+      setSetupPlaceImage(response.Design_Setup_Place_Image_url);
+      // for theme
+      setFile(response.Design_Theme_Image_url);
+      setDesignFiles(response.Design_ImageUrls_Array);
+    } catch (error) {
+      alert('Error in fetching');
+    }
+  };
 
   const onSubmit = async (data: any, e: any) => {
     console.log(data);
@@ -102,6 +154,7 @@ const AddDesignForm: FC = () => {
 
       let imgURLSFormData = new FormData();
 
+
       //@ts-ignore
       if (designFiles) {
         for (let i = 0; i < designFiles?.length; i++) {
@@ -138,24 +191,28 @@ const AddDesignForm: FC = () => {
       console.log('postalData', postalData);
       // return;
 
-      let addDesignRespose = await addDesign(postalData);
-      if (addDesignRespose?.error) {
-        throw new Error(addDesignRespose?.error);
+      if (router.query.designid) {
+
+        console.log("HERE");
+        let updateDesignResponse = await updateSingleDesign(router.query.designid, postalData);
+        if (updateDesignResponse?.error) {
+          throw new Error(updateDesignResponse?.error);
+        } else {
+          alert('SUCCESFUL Update');
+        }
       } else {
-        alert('SUCCESFUL UPLOAD');
+        let addDesignRespose = await addDesign(postalData);
+        if (addDesignRespose?.error) {
+          throw new Error(addDesignRespose?.error);
+        } else {
+          alert('SUCCESFUL CREATION');
+        }
       }
     } catch (error) {
       alert('ERROR');
       console.error(error);
     }
   };
-
-  // useEffect(() => {
-  //   designFiles?.forEach((file: any) => {
-  //     console.log('file:', file);
-  //   });
-  //   // console.log(designFiles);
-  // }, [designFiles]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, updateFunc: (file: File) => void) => {
     let tar = e.target;
@@ -246,10 +303,6 @@ const AddDesignForm: FC = () => {
   const handleOptionChange = (e: any, updateFunc: (arg: any) => void) => {
     updateFunc(e.target.value);
   };
-
-  useEffect(() => {
-    fetchPartyData();
-  }, []);
 
   return (
     <Container fluid>
@@ -580,7 +633,7 @@ const AddDesignForm: FC = () => {
             id="upload"
             name="image_design"
             onChange={e => setDesignFiles(e.target.files)}
-            ref={register({ required: true })}
+            ref={register({ required: !designFiles })}
             multiple={true}
           />
           {errors.image_design && <small className="text-danger">Require Deisgn Image(s)</small>}

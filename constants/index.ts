@@ -49,7 +49,7 @@ const GET_BOOKINGS = () => `${BASE_URL}/booking`;
 
 const POSTERS_API = () => `${BASE_URL}/poster`;
 
-const DESIGNS_API = () => `${BASE_URL}/design`;
+const DESIGNS_API = (id?: Number) => `${BASE_URL}/design${id ? `?designid=${id}` : ''}`;
 
 const VENDORS_API = () => `${BASE_URL}/vendor`;
 
