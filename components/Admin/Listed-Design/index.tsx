@@ -33,6 +33,7 @@ const ListedDesign = () => {
   const [setupDurationFilter, setSetupDurationFilter] = useState('all');
   const [designIDFilter, setDesignIdFiter] = useState('all');
   const [vendorIdFilter, setVendorIdFilter] = useState('all');
+  const [budgetFilter, setBudgetFilter] = useState('all');
 
   const renderOptions = (data: any, field: string) => {
     let options: any[] = [];
@@ -53,10 +54,14 @@ const ListedDesign = () => {
   useEffect(() => {
     let changeData = [...data];
     if (designIDFilter !== 'all') {
-      changeData = changeData.filter((el: any) => el.Design_Id.toString() === designIDFilter.toString());
+      changeData = changeData.filter(
+        (el: any) => el.Design_Id.toString() === designIDFilter.toString()
+      );
     }
     if (vendorIdFilter !== 'all') {
-      changeData = changeData.filter((el: any) => el.Vendor_Id.toString() === vendorIdFilter.toString());
+      changeData = changeData.filter(
+        (el: any) => el.Vendor_Id.toString() === vendorIdFilter.toString()
+      );
     }
     if (themeBaseFilter !== 'all') {
       changeData = changeData.filter((el: any) => el.Design_Theme === themeBaseFilter);
@@ -72,7 +77,19 @@ const ListedDesign = () => {
         (el: any) => el.Design_Occasion_Specialized === occasionFilter
       );
     }
-    console.log(changeData);
+    if (budgetFilter === 'Below 2000') {
+      changeData = changeData.filter((el: any) => parseInt(el.Design_Price) < 2000);
+    } else if (budgetFilter === '2000-4000') {
+      changeData = changeData.filter(
+        (el: any) => parseInt(el.Design_Price) >= 2000 && parseInt(el.Design_Price) <= 4000
+      );
+    } else if (budgetFilter === '4001-10000') {
+      changeData = changeData.filter(
+        (el: any) => parseInt(el.Design_Price) > 4000 && parseInt(el.Design_Price) <= 10000
+      );
+    } else if (budgetFilter === 'Above 10000') {
+      changeData = changeData.filter((el: any) => parseInt(el.Design_Price) > 10000);
+    }
     setFilteredData(changeData);
   }, [
     themeBaseFilter,
@@ -120,8 +137,12 @@ const ListedDesign = () => {
 
         <div>
           <label htmlFor="Budget">Budget</label>
-          <select className={``} name="Budget">
+          <select className={``} name="Budget" onChange={e => setBudgetFilter(e.target.value)}>
             <option value="all">All</option>
+            <option value="Below 2000">Below 2000</option>
+            <option value="2000-4000">2000-4000</option>
+            <option value="4001-10000">4001-10000</option>
+            <option value="Above 10000">Above 10000</option>
           </select>
         </div>
 

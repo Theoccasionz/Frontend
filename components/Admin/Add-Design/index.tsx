@@ -17,6 +17,7 @@ const AddDesignForm: FC = () => {
   const [file, setFile] = useState<null | File>(null);
   const [occasionSpecializedImage, setOccasionSpecializedImage] = useState<null | File>(null);
   const [setupPlaceImage, setSetupPlaceImage] = useState<null | File>(null);
+  const [designFiles, setDesignFiles] = useState<null | FileList>(null);
 
   const [occasions, setOccasions] = useState([]);
   const [places, setPlaces] = useState([]);
@@ -33,7 +34,7 @@ const AddDesignForm: FC = () => {
     let {
       design_name,
       theme_name,
-      theme_id,
+      design_id,
       vendor_id,
       vendor_name,
       occasion,
@@ -96,8 +97,24 @@ const AddDesignForm: FC = () => {
         setup_place = findChosenName(placeChosen, places);
       }
 
-      const ImageUrlsArray: string[] = [image_url_design_theme];
+      let ImageUrlsArray: string[] = [];
       const formData = new FormData();
+
+      let imgURLSFormData = new FormData();
+
+      //@ts-ignore
+      if (designFiles) {
+        for (let i = 0; i < designFiles?.length; i++) {
+          imgURLSFormData.append(`fileName`, `${design_name}-${i}`);
+          imgURLSFormData.append(`image`, designFiles[i]);
+        }
+      }
+
+      let imageURLSreponse = await imageUpload(imgURLSFormData);
+
+      imageURLSreponse.forEach((imgURL: any) => {
+        ImageUrlsArray.push(imgURL.url.replace(IMG_BASE_URL, ''));
+      });
 
       let postalData = {
         Design_Name: design_name,
@@ -118,28 +135,10 @@ const AddDesignForm: FC = () => {
         Design_ImageUrls_Array: ImageUrlsArray,
       };
 
-      // formData.append('Design_Name', design_name);
-      // formData.append('Design_Occasion_Specialized', occasion);
-      // formData.append('Design_Occasion_Specialized_Image_url', occasion_specialized_image_url);
-      // formData.append('Design_Theme', theme_name);
-      // formData.append('Design_Theme_Image_url', image_url_design_theme);
-      // formData.append('Design_Theme_Desc', about);
-      // formData.append('Design_Setup_Place', setup_place);
-      // formData.append('Design_Setup_Place_Image_url', setup_place_image_url);
-      // formData.append('Design_Setup_Duration', setup_time);
-      // formData.append('Design_Inclusions', design_inclusions);
-      // formData.append('Design_Rentals', rental_items);
-      // formData.append('Design_Non_Rentals', non_rental_items);
-      // //@ ts-ignore
-      // formData.append('Design_ImageUrls_Array', JSON.stringify(ImageUrlsArray));
-      // formData.append('Design_Price', price);
-      // formData.append('Design_Service_Desc', about_service);
-      // formData.append('Vendor_Id', vendor_id);
-
       console.log('postalData', postalData);
-      return ;
+      // return;
 
-      let addDesignRespose = await addDesign(formData);
+      let addDesignRespose = await addDesign(postalData);
       if (addDesignRespose?.error) {
         throw new Error(addDesignRespose?.error);
       } else {
@@ -151,15 +150,18 @@ const AddDesignForm: FC = () => {
     }
   };
 
+  // useEffect(() => {
+  //   designFiles?.forEach((file: any) => {
+  //     console.log('file:', file);
+  //   });
+  //   // console.log(designFiles);
+  // }, [designFiles]);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>, updateFunc: (file: File) => void) => {
     let tar = e.target;
     // @ts-ignore
     let selFile = tar.files[0];
     updateFunc(selFile);
-  };
-
-  const createPreviewURL = (file: File | null) => {
-    return URL.createObjectURL(file);
   };
 
   const fetchPartyData = async () => {
@@ -266,33 +268,19 @@ const AddDesignForm: FC = () => {
             />
             {errors.design_name && <small className="text-danger">Theme Name required</small>}
           </Col>
-        </Form.Group>
-        <Form.Group as={Row}>
+
           <Form.Label column md={4} lg={2}>
-            Theme Name
+            Design ID
           </Form.Label>
           <Col md={8} lg={4}>
             <Form.Control
               type="text"
-              name="theme_name"
-              placeholder="Theme Name"
-              ref={register({ required: true })}
-              style={errors.theme_name && { border: '1px solid red' }}
-            />
-            {errors.theme_name && <small className="text-danger">Theme Name required</small>}
-          </Col>
-          <Form.Label column md={4} lg={2}>
-            Theme ID
-          </Form.Label>
-          <Col md={8} lg={4}>
-            <Form.Control
-              type="text"
-              name="theme_id"
+              name="design_id"
               placeholder="Theme ID"
               ref={register({ required: true })}
-              style={errors.theme_id && { border: '1px solid red' }}
+              style={errors.design_id && { border: '1px solid red' }}
             />
-            {errors.theme_id && <small className="text-danger">Theme ID required</small>}
+            {errors.design_id && <small className="text-danger">Design ID required</small>}
           </Col>
         </Form.Group>
         <Form.Group as={Row}>
@@ -433,14 +421,14 @@ const AddDesignForm: FC = () => {
           <Col md={8} lg={4}>
             <Form.Control
               as="select"
-              name="theme_base"
+              name="theme_name"
               ref={register({ required: true })}
-              style={errors.theme_base && { border: '1px solid red' }}
+              style={errors.theme_name && { border: '1px solid red' }}
               onChange={e => handleOptionChange(e, setThemeChosen)}
             >
               {renderOptions(themes)}
             </Form.Control>
-            {errors.theme_base && <small className="text-danger">Theme Base required</small>}
+            {errors.theme_name && <small className="text-danger">Theme Base required</small>}
           </Col>
         </Form.Group>
         {themeChosen === 'Add Value' && (
@@ -465,11 +453,11 @@ const AddDesignForm: FC = () => {
               <input
                 type="file"
                 id="upload"
-                name="image_design"
+                name="image_theme"
                 onChange={e => handleChange(e, setFile)}
                 ref={register({ required: true })}
               />
-              {errors.image_design && <small className="text-danger">Required field</small>}
+              {errors.image_theme && <small className="text-danger">Required field</small>}
             </Col>
           </Form.Group>
         )}
@@ -583,28 +571,20 @@ const AddDesignForm: FC = () => {
             {errors.setup_time && <small className="text-danger">Setup Time required</small>}
           </Col>
         </Form.Group>
-        {/* <div className="text-right">
-          <label htmlFor="upload" className={styles.label}>
-            <input
-              type="file"
-              id="upload"
-              name="image_design"
-              hidden={true}
-              onChange={e => handleChange(e, setFile)}
-              ref={register({ required: true })}
-            />
+        <div className="">
+          <label htmlFor="image_design" className="mr-3">
             Upload Image
           </label>
-          {errors.image_design && <small className="text-danger">Image is required</small>}
-          <button
-            className={`${styles.label}`}
-            disabled={!file}
-            onClick={() => setShow(true)}
-            type="button"
-          >
-            Preview Image
-          </button>
-        </div> */}
+          <input
+            type="file"
+            id="upload"
+            name="image_design"
+            onChange={e => setDesignFiles(e.target.files)}
+            ref={register({ required: true })}
+            multiple={true}
+          />
+          {errors.image_design && <small className="text-danger">Require Deisgn Image(s)</small>}
+        </div>
         <div className="text-right">
           <Button variant="primary" type="submit">
             Save

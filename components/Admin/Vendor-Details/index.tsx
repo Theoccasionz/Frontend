@@ -150,7 +150,7 @@ const VendorDetailsComp = () => {
   return (
     <main>
       <div className="text-right">
-        <button className={`${styles.addBtn} mt-4`} onClick={handleShow}>
+        <button className={`${styles.addBtn} mt-4`} onClick={()=>handleShow(null)}>
           Add
         </button>
       </div>
