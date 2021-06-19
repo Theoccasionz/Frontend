@@ -9,6 +9,7 @@ import Container from 'react-bootstrap/Container';
 import { imageUpload } from '../../../server';
 import { addDesign, getSingleDesign, updateSingleDesign } from '../../../server/admin';
 import { partyPlaceData } from '../../../server/party-place';
+import Loading from '../../Loading/loading';
 
 const IMG_BASE_URL = 'http://res.cloudinary.com/the-occassion/';
 
@@ -28,7 +29,7 @@ const AddDesignForm: FC = () => {
   const [occasionChosen, setOccasionChosen] = useState('');
   const [placeChosen, setPlaceChosen] = useState('');
   const [themeChosen, setThemeChosen] = useState('');
-  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (router.asPath !== router.route) {
@@ -104,6 +105,7 @@ const AddDesignForm: FC = () => {
     } = data;
 
     try {
+      setLoading(true);
       let image_url_design_theme: any;
       if (themeChosen === 'Add Value') {
         let imageFormData = new FormData();
@@ -154,7 +156,6 @@ const AddDesignForm: FC = () => {
 
       let imgURLSFormData = new FormData();
 
-
       //@ts-ignore
       if (designFiles) {
         for (let i = 0; i < designFiles?.length; i++) {
@@ -192,24 +193,25 @@ const AddDesignForm: FC = () => {
       // return;
 
       if (router.query.designid) {
-
-        console.log("HERE");
-        let updateDesignResponse = await updateSingleDesign(router.query.designid, postalData);
+        let updateDesignData = {
+          id: router.query.designid,
+          conten: { postalData },
+        };
+        let updateDesignResponse = await updateSingleDesign(updateDesignData);
         if (updateDesignResponse?.error) {
           throw new Error(updateDesignResponse?.error);
-        } else {
-          alert('SUCCESFUL Update');
         }
       } else {
         let addDesignRespose = await addDesign(postalData);
         if (addDesignRespose?.error) {
           throw new Error(addDesignRespose?.error);
-        } else {
-          alert('SUCCESFUL CREATION');
         }
       }
+      setLoading(false);
+      alert('Succesfull API CALL');
     } catch (error) {
       alert('ERROR');
+      setLoading(false);
       console.error(error);
     }
   };
@@ -306,6 +308,7 @@ const AddDesignForm: FC = () => {
 
   return (
     <Container fluid>
+      {loading && <Loading />}
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group as={Row}>
           <Form.Label column md={4} lg={2}>

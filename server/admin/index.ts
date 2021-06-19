@@ -61,10 +61,10 @@ const getSingleDesign = async (id: Number) => {
   }
 };
 
-const updateSingleDesign = async (id: any, data: any) => {
+const updateSingleDesign = async (data: any) => {
   let response;
   try {
-    response = await axios.put(DESIGNS_API(id), data);
+    response = await axios.put(DESIGNS_API(), data);
     return response.data;
   } catch (error) {
     throw new Error(error?.response?.data || error?.message);
