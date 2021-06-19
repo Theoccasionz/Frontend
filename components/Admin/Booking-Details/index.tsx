@@ -103,12 +103,12 @@ const BookingDetails = () => {
       <section>
         <Table data={filteredData} height={300}>
           <Column width={200} align="center" fixed resizable>
-            <HeaderCell>Name</HeaderCell>
-            <Cell dataKey="Booked_Design_Name" />
+            <HeaderCell>Customer Name</HeaderCell>
+            <Cell dataKey="Customer_Name" />
           </Column>
           <Column align="center" width={350}>
-            <HeaderCell>Theme Name</HeaderCell>
-            <Cell dataKey="themeName" />
+            <HeaderCell>Design Name</HeaderCell>
+            <Cell dataKey="Booked_Design_Name" />
           </Column>
           <Column align="center" width={350}>
             <HeaderCell>Booked Date</HeaderCell>
@@ -128,8 +128,15 @@ const BookingDetails = () => {
               {rowData => {
                 return (
                   <select className={``} name="SetupDate">
-                    <option value="complete">Complete</option>
-                    <option value="cancel">Cancel</option>
+                    <option value="UPCOMING" selected={rowData.Booking_Status === 'UPCOMING'}>
+                      Upcoming
+                    </option>
+                    <option value="COMPLETE" selected={rowData.Booking_Status === 'COMPELTE'}>
+                      Complete
+                    </option>
+                    <option value="cancel" selected={rowData.Booking_Status === 'CANCEL '}>
+                      Cancel
+                    </option>
                   </select>
                 );
               }}

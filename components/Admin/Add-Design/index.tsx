@@ -341,19 +341,6 @@ const AddDesignForm: FC = () => {
         </Form.Group>
         <Form.Group as={Row}>
           <Form.Label column md={4} lg={2}>
-            Vendor Name
-          </Form.Label>
-          <Col md={8} lg={4}>
-            <Form.Control
-              type="text"
-              name="vendor_name"
-              placeholder="Vendor Name"
-              ref={register({ required: true })}
-              style={errors.vendor_name && { border: '1px solid red' }}
-            />
-            {errors.vendor_name && <small className="text-danger">Vendor Name required</small>}
-          </Col>
-          <Form.Label column md={4} lg={2}>
             Vendor ID
           </Form.Label>
           <Col md={8} lg={4}>

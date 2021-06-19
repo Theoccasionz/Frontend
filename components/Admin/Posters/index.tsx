@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Column, Cell, HeaderCell } from 'rsuite-table';
 import Modal from 'react-bootstrap/Modal';
 import { useForm } from 'react-hook-form';
@@ -10,7 +10,7 @@ import { imageUpload } from '../../../server';
 
 import styles from '../../../styles/admin/posters.module.css';
 import 'rsuite-table/dist/css/rsuite-table.css';
-import { getPosters, addPoster } from '../../../server/admin';
+import { getPosters, addPoster, deletePoster, displayTogglePoster } from '../../../server/admin';
 
 const fakeData = [
   //   {
@@ -130,6 +130,28 @@ const PostersComp = () => {
     fetchPosters();
   }, []);
 
+  const handleDeletePoster = async (id: any) => {
+    if (confirm(`Are you sure you want to delete the poster with id=${id}`)) {
+      try {
+        let data = { id };
+        let response = await deletePoster(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const handleTogglePoster = async (id: any, active: number) => {
+    if (confirm(`Are you sure you want to ${active ? 'hide' : 'show'} the poster with id=${id}`)) {
+      try {
+        let data = { id };
+        let response = await displayTogglePoster(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   const onSubmit = async (data: any, e: any) => {
     e.preventDefault();
 
@@ -200,17 +222,20 @@ const PostersComp = () => {
             <HeaderCell>Action</HeaderCell>
             <Cell>
               {rowData => {
-                function handleAction() {
-                  alert(`id:${rowData.id}`);
-                }
                 return (
                   <span>
-                    <button className={styles.delete} onClick={handleAction}>
+                    <button
+                      className={styles.delete}
+                      onClick={() => handleDeletePoster(rowData.Poster_Id)}
+                    >
                       {' '}
                       <b>Delete</b>{' '}
                     </button>{' '}
                     |
-                    <button className={styles.noDisplay} onClick={handleAction}>
+                    <button
+                      className={styles.noDisplay}
+                      onClick={() => handleTogglePoster(rowData.Poster_Id, rowData.Poster_Active)}
+                    >
                       {' '}
                       <b>Don't display</b>{' '}
                     </button>

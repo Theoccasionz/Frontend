@@ -20,7 +20,7 @@ const VendorDetailsComp = () => {
   const [typeFilter, setTypeFilter] = useState('all');
   const handleShow = (id?: Number) => {
     if (id) {
-      let result: any = data.find((d: any) => d.Vendor_Id === id);
+      let result: any = allData.find((d: any) => d.Vendor_Id === id);
       if (result) {
         reset(
           {
@@ -150,7 +150,7 @@ const VendorDetailsComp = () => {
   return (
     <main>
       <div className="text-right">
-        <button className={`${styles.addBtn} mt-4`} onClick={()=>handleShow(null)}>
+        <button className={`${styles.addBtn} mt-4`} onClick={() => handleShow(undefined)}>
           Add
         </button>
       </div>
@@ -170,7 +170,7 @@ const VendorDetailsComp = () => {
       </section>
       <section className="mt-4">
         <Table data={filteredData} height={300}>
-          <Column width={100} align="center" fixed resizable>
+          <Column width={300} align="center" fixed resizable>
             <HeaderCell>ID</HeaderCell>
             <Cell dataKey="Vendor_Id" />
           </Column>

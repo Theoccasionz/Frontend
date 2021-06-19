@@ -21,6 +21,26 @@ const addPoster = async (data: any) => {
   }
 };
 
+const displayTogglePoster = async (data?: any) => {
+  let response: any;
+  try {
+    response = await axios.put(POSTERS_API(), data);
+    return response.data;
+  } catch (error) {
+    return { error: error?.response?.data || error?.message };
+  }
+};
+
+const deletePoster = async (data?: any) => {
+  let response: any;
+  try {
+    response = await axios.delete(POSTERS_API(), data);
+    return response.data;
+  } catch (error) {
+    return { error: error?.response?.data || error?.message };
+  }
+};
+
 const getBookings = async () => {
   let response: any;
   try {
@@ -94,6 +114,8 @@ const addVendor = async (data: any) => {
 export {
   getPosters,
   addPoster,
+  displayTogglePoster,
+  deletePoster,
   getBookings,
   addDesign,
   getDesigns,
