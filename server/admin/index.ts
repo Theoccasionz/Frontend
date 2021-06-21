@@ -51,6 +51,16 @@ const getBookings = async () => {
   }
 };
 
+const changeBookingStatus = async (data: any) => {
+  let response: any;
+  try {
+    response = await axios.put(GET_BOOKINGS(), data);
+    return response.data;
+  } catch (error) {
+    return { error: error?.response?.data || error?.message };
+  }
+};
+
 const addDesign = async (data: any) => {
   let response;
   try {
@@ -111,15 +121,27 @@ const addVendor = async (data: any) => {
   }
 };
 
+const editVendor = async (data: any) => {
+  let response;
+  try {
+    response = await axios.put(VENDORS_API(), data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error?.response?.data || error?.message);
+  }
+};
+
 export {
   getPosters,
   addPoster,
   displayTogglePoster,
   deletePoster,
   getBookings,
+  changeBookingStatus,
   addDesign,
   getDesigns,
   getVendors,
+  editVendor,
   addVendor,
   getSingleDesign,
   updateSingleDesign,

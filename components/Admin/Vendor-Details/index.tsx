@@ -7,10 +7,11 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { Table, Column, Cell, HeaderCell } from 'rsuite-table';
 
-import { addVendor, getVendors } from '../../../server/admin/index';
+import { addVendor, getVendors, editVendor } from '../../../server/admin/index';
 
 import 'rsuite-table/dist/css/rsuite-table.css';
 import styles from '../../../styles/admin/vendor-details.module.css';
+import Loading from '../../Loading/loading';
 
 const VendorDetailsComp = () => {
   const [show, setShow] = useState(false);
@@ -18,6 +19,8 @@ const VendorDetailsComp = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [idFilter, setIdFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
+  const [edit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleShow = (id?: Number) => {
     if (id) {
       let result: any = allData.find((d: any) => d.Vendor_Id === id);
@@ -76,7 +79,6 @@ const VendorDetailsComp = () => {
   const { register, handleSubmit, errors, reset } = useForm({ mode: 'onTouched' });
 
   const onSubmit = async (data: any, e: any) => {
-    console.log(data);
     e.preventDefault();
 
     const { name, id, city, type, contact, alternate, email, address, owner } = data;
@@ -84,20 +86,47 @@ const VendorDetailsComp = () => {
     let vendorData = {
       Company_Name: owner,
       Vendor_Address: address,
-      Vendor_Alt_MobileNo: alternate,
+      Vendor_Alt_MobileNo: alternate || undefined,
       Vendor_City_server: city,
       Vendor_Email: email,
-      Vendor_Id: id,
+      Vendor_Id: parseInt(id),
       Vendor_MobileNo: contact,
       Vendor_Name: name,
       Vendor_Type: type,
     };
 
-    try {
-      let response = await addVendor(vendorData);
-      console.log(response);
-    } catch (error) {
-      alert(error);
+    setLoading(true);
+    if (edit) {
+      let vendorUpdateData = {
+        id: parseInt(id),
+        content: {
+          ...vendorData,
+        },
+      };
+      try {
+        let response = await addVendor(vendorUpdateData);
+        if (response.error) {
+          setLoading(false);
+          alert('Update Successful');
+        } else {
+          throw new Error(response.error);
+        }
+      } catch (error) {
+        setLoading(false);
+        alert(error);
+      }
+    } else {
+      try {
+        let response = await addVendor(vendorData);
+        if (response.error) {
+          setLoading(false);
+          alert('Creation Successful');
+        } else {
+          throw new Error(response.error);
+        }
+      } catch (error) {
+        setLoading(false);
+      }
     }
 
     handleClose();
@@ -105,10 +134,13 @@ const VendorDetailsComp = () => {
 
   const fetchVendors = async () => {
     try {
+      setLoading(true);
       let response = await getVendors();
       setAllData(response);
       setFilteredData(response);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       alert(error);
     }
   };
@@ -149,8 +181,15 @@ const VendorDetailsComp = () => {
   }, []);
   return (
     <main>
+      {loading && <Loading />}
       <div className="text-right">
-        <button className={`${styles.addBtn} mt-4`} onClick={() => handleShow(undefined)}>
+        <button
+          className={`${styles.addBtn} mt-4`}
+          onClick={() => {
+            setEdit(false);
+            handleShow(undefined);
+          }}
+        >
           Add
         </button>
       </div>
@@ -203,6 +242,7 @@ const VendorDetailsComp = () => {
                     <button
                       className={styles.edit}
                       onClick={() => {
+                        setEdit(true);
                         handleShow(rowData.Vendor_Id);
                       }}
                     >

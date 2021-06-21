@@ -1,17 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Column, Cell, HeaderCell } from 'rsuite-table';
-import { getBookings } from '../../../server/admin';
+import { changeBookingStatus, getBookings } from '../../../server/admin';
 
 import 'rsuite-table/dist/css/rsuite-table.css';
 import style from '../../../styles/admin/booking-details.module.css';
+import Loading from '../../Loading/loading';
 
 const BookingDetails = () => {
   const fetchBookings = async () => {
     try {
+      setLoading(true);
       let response = await getBookings();
+      setLoading(false);
+      response.forEach((booking: any) => {
+        booking.Booking_Setup_DATE =
+          new Date(booking.Booking_Setup_DATE).getFullYear() +
+          ' - ' +
+          new Date(booking.Booking_Setup_DATE).getMonth() +
+          ' - ' +
+          new Date(booking.Booking_Setup_DATE).getDate();
+        booking.Booking_Date =
+          new Date(booking.Booking_Date).getFullYear() +
+          ' - ' +
+          new Date(booking.Booking_Date).getMonth() +
+          ' - ' +
+          new Date(booking.Booking_Date).getDate();
+      });
       setData(response);
       setFilteredData(response);
     } catch (error) {
+      setLoading(false);
       console.error(error);
     }
   };
@@ -25,6 +43,7 @@ const BookingDetails = () => {
   const [bookedDateFilter, setBookedDateFilter] = useState('all');
   const [setupDateFilter, setSetupDateFilter] = useState('all');
   const [vendorIdFilter, setVendorIdFilter] = useState('all');
+  const [loading, setLoading] = useState(false);
 
   const renderOptions = (data: any, field: string) => {
     let options: any[] = [];
@@ -40,6 +59,23 @@ const BookingDetails = () => {
         {opt}
       </option>
     ));
+  };
+
+  const handlechangeStatus = async (value: any, id: any) => {
+    setLoading(true);
+    try {
+      let data = { id, content: { Booking_Status: value } };
+      let response = await changeBookingStatus(data);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        setLoading(false);
+        alert('Changed status');
+      }
+    } catch (error) {
+      setLoading(false);
+      alert('error');
+    }
   };
 
   useEffect(() => {
@@ -60,13 +96,14 @@ const BookingDetails = () => {
 
   return (
     <div>
+      {loading && <Loading />}
       <section className={style.filters}>
         <div>
           <label htmlFor="BookedDate">Booked Date</label>
           <select
             className={``}
             name="BookedDate"
-            onChange={e => setSetupDateFilter(e.target.value)}
+            onChange={e => setBookedDateFilter(e.target.value)}
           >
             <option value="all">All</option>
             {renderOptions(data, 'Booking_Date')}
@@ -112,11 +149,11 @@ const BookingDetails = () => {
           </Column>
           <Column align="center" width={350}>
             <HeaderCell>Booked Date</HeaderCell>
-            <Cell dataKey="Booking_Date" />
+            <Cell dataKey="Booking_Date" title="yyyy-dd-mm" />
           </Column>
           <Column align="center" width={400}>
             <HeaderCell>Set up Date</HeaderCell>
-            <Cell dataKey="Booking_Setup_DATE" />
+            <Cell dataKey="Booking_Setup_DATE" title="yyyy-dd-mm" />
           </Column>
           <Column align="center" width={400}>
             <HeaderCell>Price</HeaderCell>
@@ -127,15 +164,19 @@ const BookingDetails = () => {
             <Cell>
               {rowData => {
                 return (
-                  <select className={``} name="SetupDate">
+                  <select
+                    className={``}
+                    name="SetupDate"
+                    onChange={e => handlechangeStatus(e.target.value, rowData.BookingDetails_Id)}
+                  >
                     <option value="UPCOMING" selected={rowData.Booking_Status === 'UPCOMING'}>
                       Upcoming
                     </option>
-                    <option value="COMPLETE" selected={rowData.Booking_Status === 'COMPELTE'}>
-                      Complete
+                    <option value="SERVICED" selected={rowData.Booking_Status === 'SERVICED'}>
+                      Serviced
                     </option>
-                    <option value="cancel" selected={rowData.Booking_Status === 'CANCEL '}>
-                      Cancel
+                    <option value="CANCELLED" selected={rowData.Booking_Status === 'CANCELLED'}>
+                      Cancelled
                     </option>
                   </select>
                 );

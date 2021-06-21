@@ -608,7 +608,7 @@ const AddDesignForm: FC = () => {
         </Form.Group>
         <Form.Group as={Row}>
           <Form.Label column md={4} lg={2}>
-            Setup Time
+            Setup Time(hrs)
           </Form.Label>
           <Col md={8} lg={4}>
             <Form.Control
