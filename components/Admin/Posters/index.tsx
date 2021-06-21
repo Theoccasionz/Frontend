@@ -7,91 +7,18 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { imageUpload } from '../../../server';
+import Loading from '../../Loading/loading';
 
 import styles from '../../../styles/admin/posters.module.css';
 import 'rsuite-table/dist/css/rsuite-table.css';
 import { getPosters, addPoster, deletePoster, displayTogglePoster } from '../../../server/admin';
-
-const fakeData = [
-  //   {
-  //     id: 1,
-  //     avartar: 'https://s3.amazonaws.com/uifaces/faces/twitter/justinrob/128.jpg',
-  //     city: 'New Amieshire',
-  //     email: 'Leora13@yahoo.com',
-  //     firstName: 'Ernest Schuppe SchuppeSchuppeSchuppeSchuppeSchuppeSchuppe Schuppe',
-  //     lastName: 'Schuppe',
-  //     street: 'Ratke Port',
-  //     zipCode: '17026-3154',
-  //     date: '2016-09-23T07:57:40.195Z',
-  //     bs: 'global drive functionalities',
-  //     catchPhrase: 'Intuitive impactful software',
-  //     companyName: 'Lebsack - Nicolas',
-  //     words: 'saepe et omnis',
-  //     sentence: 'Quos aut sunt id nihil qui.',
-  //     stars: 820,
-  //     followers: 70,
-  //   },
-  //   {
-  //     id: 2,
-  //     avartar: 'https://s3.amazonaws.com/uifaces/faces/twitter/thaisselenator_/128.jpg',
-  //     city: 'New Gust',
-  //     email: 'Mose_Gerhold51@yahoo.com',
-  //     firstName: 'Janis',
-  //     lastName: 'Vandervort',
-  //     street: 'Dickinson Keys',
-  //     zipCode: '43767',
-  //     date: '2017-03-06T09:59:12.551Z',
-  //     bs: 'e-business maximize bandwidth',
-  //     catchPhrase: 'De-engineered discrete secured line',
-  //     companyName: 'Glover - Hermiston',
-  //     words: 'deleniti dolor nihil',
-  //     sentence: 'Illo quidem libero corporis laborum.',
-  //     stars: 1200,
-  //     followers: 170,
-  //   },
-  //   {
-  //     id: 3,
-  //     avartar: 'https://s3.amazonaws.com/uifaces/faces/twitter/arpitnj/128.jpg',
-  //     city: 'Lefflerstad',
-  //     email: 'Frieda.Sauer61@gmail.com',
-  //     firstName: 'Makenzie',
-  //     lastName: 'Bode',
-  //     street: 'Legros Divide',
-  //     zipCode: '54812',
-  //     date: '2016-12-08T13:44:26.557Z',
-  //     bs: 'plug-and-play e-enable content',
-  //     catchPhrase: 'Ergonomic 6th generation challenge',
-  //     companyName: 'Williamson - Kassulke',
-  //     words: 'quidem earum magnam',
-  //     sentence: 'Nam qui perferendis ut rem vitae saepe.',
-  //     stars: 610,
-  //     followers: 170,
-  //   },
-  {
-    id: '1',
-    name: 'Hello',
-    date: new Date().toString(),
-    action: 'New action',
-  },
-  {
-    id: '2',
-    name: 'Hello',
-    date: new Date().toString(),
-    action: 'New action',
-  },
-  {
-    id: '3',
-    name: 'Hello',
-    date: new Date().toString(),
-    action: 'New action',
-  },
-];
 
 const PostersComp = () => {
   const [show, setShow] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const [data, setData] = useState([]);
   const { register, handleSubmit, errors, reset } = useForm({ mode: 'onTouched' });
+  const [loading, setLoading] = useState(false);
   const handleClose = () => {
     setImage(null);
     reset(
@@ -118,11 +45,13 @@ const PostersComp = () => {
 
   const fetchPosters = async () => {
     try {
+      setLoading(true);
       let response = await getPosters();
-      console.log(response);
+      setLoading(false);
       setData(response);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -133,10 +62,17 @@ const PostersComp = () => {
   const handleDeletePoster = async (id: any) => {
     if (confirm(`Are you sure you want to delete the poster with id=${id}`)) {
       try {
-        let data = { id };
-        let response = await deletePoster(data);
+        setLoading(true);
+        let response = await deletePoster(id);
+        setLoading(false);
+        if (response.error) {
+          throw new Error(response.error);
+        } else {
+          alert('Deleted successfully. Reload to see changes.');
+        }
       } catch (error) {
         console.error(error);
+        setLoading(false);
       }
     }
   };
@@ -144,10 +80,18 @@ const PostersComp = () => {
   const handleTogglePoster = async (id: any, active: number) => {
     if (confirm(`Are you sure you want to ${active ? 'hide' : 'show'} the poster with id=${id}`)) {
       try {
-        let data = { id };
+        setLoading(true);
+        let data = { id, content: { Poster_Active: active ^ 1 } };
         let response = await displayTogglePoster(data);
+        if (response.error) {
+          throw new Error(response.error);
+        } else {
+          alert('Updated successfully. Reload to see changes.');
+        }
+        setLoading(false);
       } catch (error) {
         console.error(error);
+        setLoading(false);
       }
     }
   };
@@ -186,6 +130,7 @@ const PostersComp = () => {
 
   return (
     <main>
+      {loading && <Loading />}
       <h3>Posters</h3>
       <section>
         <div className="d-flex align-items-center">
@@ -218,7 +163,7 @@ const PostersComp = () => {
               }}
             </Cell>
           </Column>
-          <Column width={200} align="center">
+          <Column width={300} align="center">
             <HeaderCell>Action</HeaderCell>
             <Cell>
               {rowData => {
@@ -237,7 +182,7 @@ const PostersComp = () => {
                       onClick={() => handleTogglePoster(rowData.Poster_Id, rowData.Poster_Active)}
                     >
                       {' '}
-                      <b>Don't display</b>{' '}
+                      <b>{rowData.Poster_Active ? "Don't display" : 'Display'}</b>{' '}
                     </button>
                   </span>
                 );
@@ -277,23 +222,26 @@ const PostersComp = () => {
               }}
             </Cell>
           </Column>
-          <Column width={200} align="center">
+          <Column width={300} align="center">
             <HeaderCell>Action</HeaderCell>
             <Cell>
               {rowData => {
-                function handleAction() {
-                  alert(`id:${rowData.id}`);
-                }
                 return (
                   <span>
-                    <button className={styles.delete} onClick={handleAction}>
+                    <button
+                      className={styles.delete}
+                      onClick={() => handleDeletePoster(rowData.Poster_Id)}
+                    >
                       {' '}
                       <b>Delete</b>{' '}
                     </button>{' '}
                     |
-                    <button className={styles.noDisplay} onClick={handleAction}>
+                    <button
+                      className={styles.noDisplay}
+                      onClick={() => handleTogglePoster(rowData.Poster_Id, rowData.Poster_Active)}
+                    >
                       {' '}
-                      <b>Don't display</b>{' '}
+                      <b>{rowData.Poster_Active ? "Don't display" : 'Display'}</b>{' '}
                     </button>
                   </span>
                 );

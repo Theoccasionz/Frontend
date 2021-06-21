@@ -31,10 +31,10 @@ const displayTogglePoster = async (data?: any) => {
   }
 };
 
-const deletePoster = async (data?: any) => {
+const deletePoster = async (id?: number) => {
   let response: any;
   try {
-    response = await axios.delete(POSTERS_API(), data);
+    response = await axios.delete(POSTERS_API(id));
     return response.data;
   } catch (error) {
     return { error: error?.response?.data || error?.message };
