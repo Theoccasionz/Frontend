@@ -47,11 +47,11 @@ const PARTY_PLACE = () => `${BASE_URL}/paplace`;
 
 const GET_BOOKINGS = () => `${BASE_URL}/booking`;
 
-const POSTERS_API = () => `${BASE_URL}/poster`;
+const POSTERS_API = (id?: number) => `${BASE_URL}/poster${id ? `?id=${id}` : ''}`;
 
 const DESIGNS_API = (id?: Number) => `${BASE_URL}/design${id ? `?designid=${id}` : ''}`;
 
-const VENDORS_API = () => `${BASE_URL}/vendor`;
+const VENDORS_API = (id?: Number) => `${BASE_URL}/vendor${id ? `?id=${id}` : ''}`;
 
 export {
   PARTY_DATA,

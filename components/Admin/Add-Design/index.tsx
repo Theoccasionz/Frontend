@@ -20,7 +20,7 @@ const AddDesignForm: FC = () => {
   const [file, setFile] = useState<null | File>(null);
   const [occasionSpecializedImage, setOccasionSpecializedImage] = useState<null | File>(null);
   const [setupPlaceImage, setSetupPlaceImage] = useState<null | File>(null);
-  const [designFiles, setDesignFiles] = useState<null | FileList>(null);
+  const [designFiles, setDesignFiles] = useState<null | FileList | string>(null);
 
   const [occasions, setOccasions] = useState([]);
   const [places, setPlaces] = useState([]);
@@ -43,6 +43,7 @@ const AddDesignForm: FC = () => {
 
   const fetchSingleDesign = async (id: Number) => {
     try {
+      setLoading(true);
       await fetchPartyData();
       let response = await getSingleDesign(id);
       response = response[0];
@@ -76,7 +77,9 @@ const AddDesignForm: FC = () => {
       // for theme
       setFile(response.Design_Theme_Image_url);
       setDesignFiles(response.Design_ImageUrls_Array);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       alert('Error in fetching');
     }
   };
@@ -159,8 +162,12 @@ const AddDesignForm: FC = () => {
       //@ts-ignore
       if (designFiles) {
         for (let i = 0; i < designFiles?.length; i++) {
-          imgURLSFormData.append(`fileName`, `${design_name}-${i}`);
-          imgURLSFormData.append(`image`, designFiles[i]);
+          if (typeof designFiles[i] === 'string') {
+            ImageUrlsArray.push(designFiles[i] as string);
+          } else {
+            imgURLSFormData.append(`fileName`, `${design_name}-${i}`);
+            imgURLSFormData.append(`image`, designFiles[i]);
+          }
         }
       }
 
@@ -189,14 +196,14 @@ const AddDesignForm: FC = () => {
         Design_ImageUrls_Array: ImageUrlsArray,
       };
 
-      console.log('postalData', postalData);
       // return;
 
       if (router.query.designid) {
         let updateDesignData = {
           id: router.query.designid,
-          conten: { postalData },
+          content: { ...postalData },
         };
+        // console.log(updateDesignData);
         let updateDesignResponse = await updateSingleDesign(updateDesignData);
         if (updateDesignResponse?.error) {
           throw new Error(updateDesignResponse?.error);
@@ -340,19 +347,6 @@ const AddDesignForm: FC = () => {
           </Col>
         </Form.Group>
         <Form.Group as={Row}>
-          <Form.Label column md={4} lg={2}>
-            Vendor Name
-          </Form.Label>
-          <Col md={8} lg={4}>
-            <Form.Control
-              type="text"
-              name="vendor_name"
-              placeholder="Vendor Name"
-              ref={register({ required: true })}
-              style={errors.vendor_name && { border: '1px solid red' }}
-            />
-            {errors.vendor_name && <small className="text-danger">Vendor Name required</small>}
-          </Col>
           <Form.Label column md={4} lg={2}>
             Vendor ID
           </Form.Label>
@@ -614,7 +608,7 @@ const AddDesignForm: FC = () => {
         </Form.Group>
         <Form.Group as={Row}>
           <Form.Label column md={4} lg={2}>
-            Setup Time
+            Setup Time(hrs)
           </Form.Label>
           <Col md={8} lg={4}>
             <Form.Control
