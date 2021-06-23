@@ -86,10 +86,10 @@ const VendorDetailsComp = () => {
     let vendorData = {
       Company_Name: owner,
       Vendor_Address: address,
-      Vendor_Alt_MobileNo: alternate || undefined,
+      Vendor_Alt_MobileNo: alternate,
       Vendor_City_server: city,
       Vendor_Email: email,
-      Vendor_Id: parseInt(id),
+      Vendor_Id:id,
       Vendor_MobileNo: contact,
       Vendor_Name: name,
       Vendor_Type: type,
@@ -98,33 +98,35 @@ const VendorDetailsComp = () => {
     setLoading(true);
     if (edit) {
       let vendorUpdateData = {
-        id: parseInt(id),
+        id: id,
         content: {
           ...vendorData,
         },
       };
       try {
-        let response = await addVendor(vendorUpdateData);
-        if (response.error) {
+        let response = await editVendor(vendorUpdateData);
+        if (!response.error) {
           setLoading(false);
           alert('Update Successful');
         } else {
           throw new Error(response.error);
         }
-      } catch (error) {
+      } catch (error) { 
+        console.log(error);
         setLoading(false);
         alert(error);
       }
     } else {
       try {
         let response = await addVendor(vendorData);
-        if (response.error) {
+        if (!response.error) {
           setLoading(false);
           alert('Creation Successful');
         } else {
           throw new Error(response.error);
         }
       } catch (error) {
+        alert(error);
         setLoading(false);
       }
     }
