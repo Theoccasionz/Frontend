@@ -3,6 +3,8 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Link from 'next/link';
+import { SocialIcon } from 'react-social-icons';
+
 import style from '../../styles/party-place/footer.module.css';
 
 const Footer = () => {
@@ -11,9 +13,12 @@ const Footer = () => {
       <Row>
         <Col lg={4} md={6} sm={12}>
           <h4>The Occasionz</h4>
-          <p>
+          <p className={style.iconArea}>
             Follow us on : <br />
-            icons here
+            <SocialIcon url="https://www.instagram.com/" />
+            <SocialIcon url="https://www.facebook.com/" />
+            <SocialIcon url="https://www.linkedin.com/" />
+            <SocialIcon url="https://www.whatsapp.com/" />
           </p>
         </Col>
         <Col lg={4} md={6} sm={12}>
@@ -55,7 +60,8 @@ const Footer = () => {
           // className={`${style.contactArea}`}
         >
           <h5>Contact</h5>
-          wahtsapp here
+          <SocialIcon url="https://whatsapp.com/occasionz.com" />
+          <br />
           <a href="mailto:info@theoccasionz.com">info@theoccasionz.com</a>
         </Col>
       </Row>
