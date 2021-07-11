@@ -89,7 +89,7 @@ const VendorDetailsComp = () => {
       Vendor_Alt_MobileNo: alternate,
       Vendor_City_server: city,
       Vendor_Email: email,
-      Vendor_Id:id,
+      Vendor_Id: id,
       Vendor_MobileNo: contact,
       Vendor_Name: name,
       Vendor_Type: type,
@@ -111,7 +111,7 @@ const VendorDetailsComp = () => {
         } else {
           throw new Error(response.error);
         }
-      } catch (error) { 
+      } catch (error) {
         console.log(error);
         setLoading(false);
         alert(error);
@@ -165,17 +165,12 @@ const VendorDetailsComp = () => {
   };
 
   useEffect(() => {
-    if (idFilter === 'all' && typeFilter === 'all') {
-      setFilteredData(allData);
-    } else if (idFilter === 'all') {
-      setFilteredData(allData.filter((el: any) => el.Vendor_Type === typeFilter));
-    } else if (typeFilter === 'all') {
-      setFilteredData(allData.filter((el: any) => el.Vendor_Id == idFilter));
-    } else {
-      setFilteredData(
-        allData.filter((el: any) => el.Vendor_Id == idFilter && el.Vendor_Type === typeFilter)
-      );
+    let tempData = [...allData];
+    if (typeFilter !== 'all') {
+      tempData = tempData.filter((el: any) => el.Vendor_Type === typeFilter);
     }
+    tempData = tempData.filter((el: any) => el.Vendor_Id.toString().includes(idFilter.toString()));
+    setFilteredData(tempData);
   }, [idFilter, typeFilter]);
 
   useEffect(() => {
@@ -198,9 +193,7 @@ const VendorDetailsComp = () => {
       <section className="mt-4 d-flex align-items-center">
         <div>
           <label htmlFor="Occassion">Vendor Id</label>
-          <select className={``} name="Occassion" onChange={e => setIdFilter(e.target.value)}>
-            {renderOptions(allData, 'Vendor_Id')}
-          </select>
+          <input name="Occassion" onChange={e => setIdFilter(e.target.value)} />
         </div>
         <div className="ml-4">
           <label htmlFor="Theme">Vendor Type</label>

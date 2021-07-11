@@ -35,9 +35,9 @@ const AddDesignForm: FC = () => {
     if (router.asPath !== router.route) {
       if (router.query.designid) {
         fetchSingleDesign(parseInt(router.query.designid as string));
-      } else {
-        fetchPartyData();
       }
+    } else {
+      fetchPartyData();
     }
   }, [router]);
 
@@ -92,7 +92,6 @@ const AddDesignForm: FC = () => {
       theme_name,
       design_id,
       vendor_id,
-      vendor_name,
       occasion,
       setup_place,
       about,
@@ -196,7 +195,9 @@ const AddDesignForm: FC = () => {
         Design_ImageUrls_Array: ImageUrlsArray,
       };
 
-      // return;
+      console.log(postalData);
+
+      return;
 
       if (router.query.designid) {
         let updateDesignData = {
@@ -553,7 +554,7 @@ const AddDesignForm: FC = () => {
               rows={3}
               name="rental_items"
               placeholder="Goggles, Clothing"
-              ref={register({ required: true })}
+              ref={register({ required: false })}
               style={errors.rental_items && { border: '1px solid red' }}
             />
             {errors.rental_items && <small className="text-danger">Required field</small>}
@@ -569,7 +570,7 @@ const AddDesignForm: FC = () => {
               rows={3}
               name="non_rental_items"
               placeholder="Goggles, Clothing"
-              ref={register({ required: true })}
+              ref={register({ required: false })}
               style={errors.non_rental_items && { border: '1px solid red' }}
             />
             {errors.non_rental_items && <small className="text-danger">Required field</small>}
@@ -597,7 +598,7 @@ const AddDesignForm: FC = () => {
           </Form.Label>
           <Col md={8} lg={4}>
             <Form.Control
-              type="text"
+              type="integer"
               name="price"
               placeholder="Price"
               ref={register({ required: true })}
@@ -612,7 +613,7 @@ const AddDesignForm: FC = () => {
           </Form.Label>
           <Col md={8} lg={4}>
             <Form.Control
-              type="text"
+              type="number"
               name="setup_time"
               placeholder="Setup Time"
               ref={register({ required: true })}

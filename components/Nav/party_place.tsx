@@ -1,12 +1,13 @@
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import Carousel from '../Carousel';
 import SkeletonFeatured from '../Skeleton/SkeletonFeatured';
 
 type Props = {
-  occasionData: Array<any>;
-  placeData: Array<any>;
-  themeData: Array<any>;
+  occasionData?: Array<any>;
+  placeData?: Array<any>;
+  themeData?: Array<any>;
   posterData: Array<any>;
+  placesPage?: boolean;
 };
 
 const responsive = {
@@ -17,28 +18,45 @@ const responsive = {
   1200: { items: 6 },
 };
 
-const PartyPlace: FC<Props> = ({ occasionData, placeData, themeData, posterData }) => {
+const PartyPlace: FC<Props> = ({
+  occasionData,
+  placeData,
+  themeData,
+  posterData,
+  placesPage = false,
+}) => {
   return (
     <main>
       {posterData.length > 0 ? (
         <div>
-          <Carousel items={posterData} responsive={{ 568: { items: 1 } }} />
+          <Carousel
+            items={posterData}
+            responsive={{ 568: { items: 1 } }}
+            autoPlay={true}
+            autoPlayInterval={3000}
+          />
         </div>
       ) : (
         <SkeletonFeatured />
       )}
-      <section style={{ background: 'rgb(173 216 230 / 65%)', padding: '1rem', margin: '0.75rem' }}>
-        <h3 style={{ borderBottom: '1px solid #999999' }}>Choose your occasion</h3>
-        <Carousel items={occasionData} />
-      </section>
-      <section style={{ background: 'rgb(249 224 223)', padding: '1rem', margin: '0.75rem' }}>
-        <h3 style={{ borderBottom: '1px solid #999999' }}>Theme Based</h3>
-        <Carousel items={themeData} />
-      </section>
-      <section style={{ background: '#FFFFE0', padding: '1rem', margin: '0.75rem' }}>
-        <h3 style={{ borderBottom: '1px solid #999999' }}>Place</h3>
-        <Carousel items={placeData} responsive={responsive} />
-      </section>
+      {!placesPage && (
+        <Fragment>
+          <section
+            style={{ background: 'rgb(173 216 230 / 65%)', padding: '1rem', margin: '0.75rem' }}
+          >
+            <h1 style={{ borderBottom: '1px solid #999999' }}>Occasions</h1>
+            <Carousel items={occasionData} />
+          </section>
+          <section style={{ background: 'rgb(249 224 223)', padding: '1rem', margin: '0.75rem' }}>
+            <h1 style={{ borderBottom: '1px solid #999999' }}>Theme Based</h1>
+            <Carousel items={themeData} />
+          </section>
+          <section style={{ background: '#FFFFE0', padding: '1rem', margin: '0.75rem' }}>
+            <h3 style={{ borderBottom: '1px solid #999999' }}>Place</h3>
+            <Carousel items={placeData} responsive={responsive} />
+          </section>
+        </Fragment>
+      )}
     </main>
   );
 };

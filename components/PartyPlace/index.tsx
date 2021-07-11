@@ -1,15 +1,24 @@
-import React, { FC, useState, useRef } from 'react';
+import React, { FC, useState, useRef, useEffect } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { useRouter } from 'next/router';
 
 import Singleparty from './singleparty';
 import style from '../../styles/party-place/party-place.module.css';
+import { fetchDesigns } from '../../server/design';
 
-type Props = { heading: string; partyData: any[] };
+type Props = { heading: string; partyData?: any[] };
 
-const PartyPlace: FC<Props> = ({ heading = 'Default', partyData }) => {
+const PartyPlace: FC<Props> = ({ heading = 'Default' }) => {
   const [visible, setVisible] = useState(false);
-  const filterRef = useRef();
+  const filterRef = useRef<any>(null);
+  const [allData, setAllData] = useState<any>([]);
+  const [filteredData, setFilteredData] = useState<any>([]);
+
+  const [occasionFilter, setOccassionFilter] = useState('all');
+  const [themeFilter, setThemeFilter] = useState('all');
+  const [placeFilter, setPlaceFilter] = useState('all');
+  const [budgetFilter, setBudgetFilter] = useState('all');
 
   const handleClick = () => {
     if (visible) {
@@ -20,6 +29,44 @@ const PartyPlace: FC<Props> = ({ heading = 'Default', partyData }) => {
       setVisible(true);
     }
   };
+  const router = useRouter();
+  const getDesigns = async () => {
+    let response = await fetchDesigns({
+      theme: router.query.theme as string,
+      occasion: router.query.occasion as string,
+      place: router.query.place as string,
+    });
+    if (!response.error) {
+      setAllData(response);
+      setFilteredData(response);
+    } else {
+      // error handling hehre
+    }
+  };
+
+  useEffect(() => {
+    if (router.asPath !== router.route) {
+      getDesigns();
+    }
+  }, [router]);
+
+  useEffect(() => {
+    let tempData = [...allData];
+    if (occasionFilter !== 'all') {
+      tempData = tempData.filter(el => el.Design_Occasion_Specialized === occasionFilter);
+    }
+    if (themeFilter !== 'all') {
+      tempData = tempData.filter(el => el.Design_Theme === themeFilter);
+    }
+    if (placeFilter !== 'all') {
+      tempData = tempData.filter(el => el.Design_Setup_Place === placeFilter);
+    }
+    if (budgetFilter !== 'all') {
+      tempData = tempData.filter(el => el.Design_Price === budgetFilter);
+    }
+    setFilteredData(tempData);
+  }, [occasionFilter, themeFilter, placeFilter, budgetFilter]);
+
   return (
     <main>
       <div className={style.responsive}>
@@ -31,7 +78,12 @@ const PartyPlace: FC<Props> = ({ heading = 'Default', partyData }) => {
       <section className={style.filterArea} ref={filterRef} id="filter-area">
         <div>
           <label htmlFor="Occassion">Occassion</label>
-          <select className={`${style.select} ${style.occassion}`} name="Occassion">
+          <select
+            className={`${style.select} ${style.occassion}`}
+            name="Occassion"
+            onChange={e => setOccassionFilter(e.target.value)}
+          >
+            <option value="all">All</option>
             <option value="volvo">Volvo</option>
             <option value="saab">Saab</option>
             <option value="mercedes">Mercedes</option>
@@ -43,8 +95,9 @@ const PartyPlace: FC<Props> = ({ heading = 'Default', partyData }) => {
           <select
             className={`${style.select} ${style.theme}`}
             name="Theme"
-            onChange={() => console.log('Hello')}
+            onChange={e => setThemeFilter(e.target.value)}
           >
+            <option value="all">All</option>
             <option value="volvo">Volvo</option>
             <option value="saab">Saab</option>
             <option value="mercedes">Mercedes</option>
@@ -53,7 +106,12 @@ const PartyPlace: FC<Props> = ({ heading = 'Default', partyData }) => {
         </div>
         <div>
           <label htmlFor="Set Up Place">Set Up Place</label>
-          <select className={`${style.select} ${style.place}`} name="Set Up Place">
+          <select
+            className={`${style.select} ${style.place}`}
+            name="Set Up Place"
+            onChange={e => setPlaceFilter(e.target.value)}
+          >
+            <option value="all">All</option>
             <option value="volvo">Volvo</option>
             <option value="saab">Saab</option>
             <option value="mercedes">Mercedes</option>
@@ -62,7 +120,12 @@ const PartyPlace: FC<Props> = ({ heading = 'Default', partyData }) => {
         </div>
         <div>
           <label htmlFor="Budget">Budget</label>
-          <select className={`${style.select} ${style.budget}`} name="Budget">
+          <select
+            className={`${style.select} ${style.budget}`}
+            name="Budget"
+            onChange={e => setBudgetFilter(e.target.value)}
+          >
+            <option value="all">All</option>
             <option value="volvo">Volvo</option>
             <option value="saab">Saab</option>
             <option value="mercedes">Mercedes</option>
@@ -74,7 +137,7 @@ const PartyPlace: FC<Props> = ({ heading = 'Default', partyData }) => {
       <h2 className={style.headingLarge}>{heading}</h2>
 
       <Row>
-        {partyData.map((pdata, i) => (
+        {filteredData.map((pdata: any, i: any) => (
           <Col lg={3} md={6} sm={12} key={`party-${i}`} className="mx-auto">
             <Singleparty data={pdata} />
           </Col>

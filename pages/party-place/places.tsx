@@ -7,26 +7,26 @@ import LayoutPartyPlace from '../../layouts/party-place';
 const PartyPlaceTheme = () => {
   const router = useRouter();
 
-  const [designData, setDesignData] = useState([]);
+  // const [designData, setDesignData] = useState([]);
 
-  const getDesigns = async () => {
-    
-    let response = await fetchDesigns({
-      theme: router.query.theme as string,
-      occasion: router.query.occasion as string,
-      place: router.query.place as string,
-    });
-    if (!response.error) {
-      console.log('res is', response);
-      setDesignData(response);
-    } else {
-      // error handling hehre
-    }
-  };
+  // const getDesigns = async () => {
+
+  //   let response = await fetchDesigns({
+  //     theme: router.query.theme as string,
+  //     occasion: router.query.occasion as string,
+  //     place: router.query.place as string,
+  //   });
+  //   if (!response.error) {
+  //     console.log('res is', response);
+  //     setDesignData(response);
+  //   } else {
+  //     // error handling hehre
+  //   }
+  // };
 
   useEffect(() => {
     if (router.asPath !== router.route) {
-      getDesigns();
+      // getDesigns();
     }
   }, [router]);
   return (
@@ -37,7 +37,7 @@ const PartyPlaceTheme = () => {
           (router.query.occasion as string) ||
           (router.query.place as string)
         }
-        partyData={designData}
+        // partyData={designData}
       />
     </LayoutPartyPlace>
   );
