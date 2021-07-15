@@ -8,7 +8,11 @@ type Props = {
 };
 
 const PosterCard: FC<Props> = ({ url, name }) => {
-  return <img loading="eager" src={url} alt={name} />;
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <img loading="eager" src={url} alt={name} style={{ width: '95vw' }} />
+    </div>
+  );
 };
 
 export default PosterCard;

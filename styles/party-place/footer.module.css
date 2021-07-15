@@ -2,12 +2,20 @@
   background: #bbbbbb36;
 }
 
+.iconArea a:not(:last-child) {
+  margin-right: 0.5rem;
+}
+
 .link {
   display: block;
 }
 
 .link::before {
   content: '> ';
+}
+
+.combined {
+  display: flex;
 }
 
 .contactArea {

@@ -23,6 +23,8 @@ const defaultItems = [
 interface Props {
   responsive?: any;
   items: Array<JSX.Element>;
+  autoPlay?: boolean;
+  autoPlayInterval?: number;
 }
 
 const defaultResponsive = {
@@ -31,7 +33,7 @@ const defaultResponsive = {
   992: { items: 4 },
 };
 
-const Carousel: FC<Props> = ({ items, responsive }) => {
+const Carousel: FC<Props> = ({ items, responsive, autoPlay = false, autoPlayInterval = 3000 }) => {
   return (
     <AliceCarousel
       mouseTracking
@@ -39,6 +41,8 @@ const Carousel: FC<Props> = ({ items, responsive }) => {
       items={(items.length > 0 && items) || defaultItems}
       responsive={responsive || defaultResponsive}
       disableDotsControls={true}
+      autoPlay={autoPlay}
+      autoPlayInterval={autoPlayInterval}
     />
   );
 };

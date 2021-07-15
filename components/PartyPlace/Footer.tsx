@@ -3,6 +3,8 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Link from 'next/link';
+import { SocialIcon } from 'react-social-icons';
+
 import style from '../../styles/party-place/footer.module.css';
 
 const Footer = () => {
@@ -10,17 +12,30 @@ const Footer = () => {
     <Container fluid className={`px-4 py-5 mt-4 ${style.footer}`}>
       <Row>
         <Col lg={4} md={6} sm={12}>
-          <h4>The Occasionz</h4>
-          <p>
+          <h2>The Occasionz</h2>
+          <p className={style.iconArea}>
             Follow us on : <br />
-            icons here
+            <SocialIcon
+              url="https://www.instagram.com/cherishexperiences/"
+              style={{ width: '40px', height: '40px' }}
+            />
+            <SocialIcon
+              url="https://www.facebook.com/cherishexperiences"
+              style={{ width: '40px', height: '40px' }}
+            />
+            <SocialIcon url="https://www.linkedin.com/" style={{ width: '40px', height: '40px' }} />
           </p>
         </Col>
-        <Col lg={4} md={6} sm={12}>
+        <Col
+          lg={{ span: 4, offset: 4 }}
+          md={6}
+          sm={12}
+          className={`${style.combined}`}
+        >
           <div
-          //   className={`${style.companyArea}`}
+            className={`${style.companyArea}`}
           >
-            <h5>Company</h5>
+            <h2>Company</h2>
             <Link href="/about">
               <a href="/about" className={style.link}>
                 About us
@@ -47,16 +62,18 @@ const Footer = () => {
               </a>
             </Link>
           </div>
-        </Col>
-        <Col
-          lg={4}
-          md={6}
-          sm={12}
-          // className={`${style.contactArea}`}
-        >
-          <h5>Contact</h5>
-          wahtsapp here
-          <a href="mailto:info@theoccasionz.com">info@theoccasionz.com</a>
+
+          <div>
+            <h2>Contact</h2>
+            <SocialIcon
+              url="https://wa.me/message/KEKUQE5X5GNND1"
+              style={{ width: '40px', height: '40px' }}
+            />
+            <SocialIcon
+              url="mailto:info@theoccasionz.com"
+              style={{ width: '40px', height: '40px', marginLeft: '0.5rem' }}
+            />
+          </div>
         </Col>
       </Row>
     </Container>

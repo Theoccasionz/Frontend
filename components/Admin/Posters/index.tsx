@@ -111,7 +111,7 @@ const PostersComp = () => {
         Poster_Name: data.name,
         Poster_Active: '1',
         Poster_Upload_Date:
-          new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate(),
+          new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate(),
         Poster_Upload_Time:
           new Date().getHours().toString() +
           ':' +
@@ -121,6 +121,7 @@ const PostersComp = () => {
       };
       let uploadResponse: any;
       uploadResponse = await addPoster(posterData);
+      alert('Sucessfully added the poster');
     } catch (error) {
       console.log(error);
       alert('ERROR IN UPLOADING');
@@ -156,7 +157,7 @@ const PostersComp = () => {
                 const uploadDate =
                   new Date(Poster_Upload_Date).getFullYear() +
                   '-' +
-                  new Date(Poster_Upload_Date).getMonth() +
+                  (new Date(Poster_Upload_Date).getMonth() + 1).toString() +
                   '-' +
                   new Date(Poster_Upload_Date).getDate();
                 return <span>{uploadDate}</span>;
@@ -215,7 +216,7 @@ const PostersComp = () => {
                 const uploadDate =
                   new Date(Poster_Upload_Date).getFullYear() +
                   '-' +
-                  new Date(Poster_Upload_Date).getMonth() +
+                  (new Date(Poster_Upload_Date).getMonth() + 1).toString() +
                   '-' +
                   new Date(Poster_Upload_Date).getDate();
                 return <span>{uploadDate}</span>;

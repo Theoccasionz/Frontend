@@ -6,9 +6,11 @@ import SecondaryHeader from '../components/PartyPlace/SecondaryHeader';
 const LayoutPartyPlace: FC = ({ children }) => {
   return (
     <Fragment>
-      <PrimaryHeader />
-      <SecondaryHeader />
-      {children}
+      <div style={{ position: 'fixed', top: '0', width: '100vw', zIndex: 100 }}>
+        <PrimaryHeader />
+        <SecondaryHeader />
+      </div>
+      <div style={{ marginTop: '10rem' }}>{children}</div>
       <Footer />
     </Fragment>
   );
