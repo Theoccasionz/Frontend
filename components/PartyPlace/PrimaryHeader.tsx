@@ -10,7 +10,7 @@ const PrimaryHeader = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Form inline>
-        <Form.Control as="select">
+        <Form.Control as="select" style={{ fontSize: '1.5rem' }}>
           <option>Jaipur</option>
           <option>2</option>
           <option>3</option>
@@ -21,21 +21,29 @@ const PrimaryHeader = () => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ml-auto">
-          <Link href="">
-            <a href="/signup" className={style.link}>
+          <Link href="/howitworks">
+            <a href="/howitworks" className={style.link} style={{ alignSelf: 'center' }}>
               How it Works
             </a>
           </Link>
-          <Link href="">
-            <a href="/signup" className={style.link}>
-              Login
-            </a>
-          </Link>
-          <Link href="">
-            <a href="/signup" className={style.link}>
-              Signup
-            </a>
-          </Link>
+          <div style={{ alignSelf: 'center', fontSize: '1.5rem' }}> |</div>
+          <div style={{ alignSelf: 'center' }}>
+            <Link href="/login">
+              <a href="/login" className={style.link}>
+                Login
+              </a>
+            </Link>
+            <span>/</span>
+            <Link href="/signup">
+              <a
+                href="/signup"
+                className={style.link}
+                style={{ marginLeft: '0', paddingLeft: '0' }}
+              >
+                Signup
+              </a>
+            </Link>
+          </div>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

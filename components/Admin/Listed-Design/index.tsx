@@ -209,9 +209,21 @@ const ListedDesign = () => {
             <Cell>
               {rowData => {
                 return (
-                  <Link href={`/admin/add-design?designid=${rowData.Design_Id}`}>
-                    <a href={`/admin/add-design?designid=${rowData.Design_Id}`}>Edit</a>
-                  </Link>
+                  <span>
+                    <Link href={`/admin/add-design?designid=${rowData.Design_Id}`}>
+                      <a href={`/admin/add-design?designid=${rowData.Design_Id}`}>Edit</a>
+                    </Link>
+                    <button
+                      onClick={() => {
+                        if (
+                          prompt(
+                            `Are you sure you want to deactivate the design with ${rowData.Design_Id}`
+                          )
+                        ) {
+                        }
+                      }}
+                    ></button>
+                  </span>
                 );
               }}
             </Cell>

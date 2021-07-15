@@ -622,6 +622,21 @@ const AddDesignForm: FC = () => {
             {errors.setup_time && <small className="text-danger">Setup Time required</small>}
           </Col>
         </Form.Group>
+        <Form.Group as={Row}>
+          <Form.Label column sm={4}>
+            Vendor Active
+          </Form.Label>
+          <Col sm={8}>
+            <Form.Control
+              type="checkbox"
+              name="active"
+              placeholder="Name"
+              ref={register({})}
+              style={errors.active && { border: '1px solid red' }}
+            />
+            {errors.active && <small className="text-danger">Required field</small>}
+          </Col>
+        </Form.Group>
         <div className="">
           <label htmlFor="image_design" className="mr-3">
             Upload Image

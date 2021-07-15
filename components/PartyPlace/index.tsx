@@ -91,7 +91,7 @@ const PartyPlace: FC<Props> = ({ heading = 'Default' }) => {
           </select>
         </div>
         <div>
-          <label htmlFor="Theme">Theme</label>
+          <label htmlFor="Theme">Theme Base</label>
           <select
             className={`${style.select} ${style.theme}`}
             name="Theme"
@@ -105,7 +105,7 @@ const PartyPlace: FC<Props> = ({ heading = 'Default' }) => {
           </select>
         </div>
         <div>
-          <label htmlFor="Set Up Place">Set Up Place</label>
+          <label htmlFor="Set Up Place">Setup Place</label>
           <select
             className={`${style.select} ${style.place}`}
             name="Set Up Place"

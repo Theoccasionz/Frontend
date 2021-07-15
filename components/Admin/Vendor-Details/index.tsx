@@ -81,8 +81,7 @@ const VendorDetailsComp = () => {
   const onSubmit = async (data: any, e: any) => {
     e.preventDefault();
 
-    const { name, id, city, type, contact, alternate, email, address, owner } = data;
-
+    const { name, id, city, type, contact, alternate, email, address, owner, active } = data;
     let vendorData = {
       Company_Name: owner,
       Vendor_Address: address,
@@ -93,6 +92,7 @@ const VendorDetailsComp = () => {
       Vendor_MobileNo: contact,
       Vendor_Name: name,
       Vendor_Type: type,
+      Vendor_Active: active ? 1 : 0,
     };
 
     setLoading(true);
@@ -244,6 +244,21 @@ const VendorDetailsComp = () => {
                       {' '}
                       <b>Edit</b>{' '}
                     </button>{' '}
+                    <button
+                      className={styles.edit}
+                      onClick={() => {
+                        if (
+                          prompt(
+                            `Are you sure you want to deactivate the vendor with ${rowData.Vendor_Id}`
+                          )
+                        ) {
+                          // do vendor disable
+                        }
+                      }}
+                    >
+                      {' '}
+                      <b>Edit</b>{' '}
+                    </button>
                   </span>
                 );
               }}
@@ -388,6 +403,21 @@ const VendorDetailsComp = () => {
                   style={errors.owner && { border: '1px solid red' }}
                 />
                 {errors.owner && <small className="text-danger">Required field</small>}
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+              <Form.Label column sm={4}>
+                Vendor Active
+              </Form.Label>
+              <Col sm={8}>
+                <Form.Control
+                  type="checkbox"
+                  name="active"
+                  placeholder="Name"
+                  ref={register({})}
+                  style={errors.active && { border: '1px solid red' }}
+                />
+                {errors.active && <small className="text-danger">Required field</small>}
               </Col>
             </Form.Group>
 

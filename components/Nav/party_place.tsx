@@ -44,15 +44,15 @@ const PartyPlace: FC<Props> = ({
           <section
             style={{ background: 'rgb(173 216 230 / 65%)', padding: '1rem', margin: '0.75rem' }}
           >
-            <h1 style={{ borderBottom: '1px solid #999999' }}>Occasions</h1>
+            <h1 style={{ borderBottom: '1px solid #999999', fontSize: '3rem' }}>Occasions</h1>
             <Carousel items={occasionData} />
           </section>
           <section style={{ background: 'rgb(249 224 223)', padding: '1rem', margin: '0.75rem' }}>
-            <h1 style={{ borderBottom: '1px solid #999999' }}>Theme Based</h1>
+            <h1 style={{ borderBottom: '1px solid #999999', fontSize: '3rem' }}>Theme Based</h1>
             <Carousel items={themeData} />
           </section>
           <section style={{ background: '#FFFFE0', padding: '1rem', margin: '0.75rem' }}>
-            <h3 style={{ borderBottom: '1px solid #999999' }}>Place</h3>
+            <h3 style={{ borderBottom: '1px solid #999999', fontSize: '3rem' }}>Setup Place</h3>
             <Carousel items={placeData} responsive={responsive} />
           </section>
         </Fragment>
