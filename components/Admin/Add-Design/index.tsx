@@ -85,7 +85,6 @@ const AddDesignForm: FC = () => {
   };
 
   const onSubmit = async (data: any, e: any) => {
-    console.log(data);
     e.preventDefault();
     let {
       design_name,
@@ -104,6 +103,7 @@ const AddDesignForm: FC = () => {
       custom_occassion_name,
       custom_theme_name,
       custom_place_name,
+      active
     } = data;
 
     try {
@@ -193,11 +193,8 @@ const AddDesignForm: FC = () => {
         Design_Service_Desc: about_service,
         Vendor_Id: vendor_id,
         Design_ImageUrls_Array: ImageUrlsArray,
+        Design_Active: active ? 1 : 0
       };
-
-      console.log(postalData);
-
-      return;
 
       if (router.query.designid) {
         let updateDesignData = {
@@ -294,7 +291,7 @@ const AddDesignForm: FC = () => {
       if (response.error) {
         throw new Error(response.error);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const renderOptions = (data: any[]) => {
