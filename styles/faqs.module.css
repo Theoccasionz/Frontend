@@ -1,0 +1,20 @@
+.container {
+  margin: 0 auto;
+  width: min(1000px, 90vw);
+  text-align: justify;
+}
+
+.container h2 {
+  text-align: center;
+}
+
+.container ol li,
+.question {
+  font-weight: 800;
+  font-size: 1.25rem;
+}
+
+.answer {
+  font-weight: normal;
+  font-size: 1.1rem;
+}

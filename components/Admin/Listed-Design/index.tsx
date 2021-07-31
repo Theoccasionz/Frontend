@@ -211,7 +211,7 @@ const ListedDesign = () => {
                 return (
                   <span>
                     <Link href={`/admin/add-design?designid=${rowData.Design_Id}`}>
-                      <a href={`/admin/add-design?designid=${rowData.Design_Id}`}>Edit</a>
+                      <a href={`/admin/add-design?designid=${rowData.Design_Id}`} className='mr-3'>Edit</a>
                     </Link>
                     <button
                       onClick={() => {
@@ -222,7 +222,9 @@ const ListedDesign = () => {
                         ) {
                         }
                       }}
-                    ></button>
+                    >
+                      {rowData.Design_Active ? 'Disable' : 'Enable'}
+                    </button>
                   </span>
                 );
               }}

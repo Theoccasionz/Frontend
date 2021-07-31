@@ -1,5 +1,5 @@
 // const BASE_URL = 'http://localhost:8000/api';
-const BASE_URL = `http://3.23.114.139:5000/api`;
+const BASE_URL = `http://18.223.190.186:5000/api`;
 const IMG_BASE_URL = 'https://res.cloudinary.com/the-occassion/';
 const IMG_UPLOAD_URL = `${BASE_URL}/upload`;
 const PARTY_DATA = (type: String) => `${BASE_URL}/${type}`;

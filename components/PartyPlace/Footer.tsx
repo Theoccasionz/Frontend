@@ -41,8 +41,8 @@ const Footer = () => {
                 About us
               </a>
             </Link>
-            <Link href="/blogs">
-              <a href="/blogs" className={style.link}>
+            <Link href="https://shobhitjain19972.wixsite.com/my-site-8">
+              <a href="https://shobhitjain19972.wixsite.com/my-site-8" className={style.link} target="_blank" rel="noopener noreferrer">
                 Blogs
               </a>
             </Link>
@@ -51,8 +51,8 @@ const Footer = () => {
                 Privacy Policy
               </a>
             </Link>
-            <Link href="/tandc">
-              <a href="/tandc" className={style.link}>
+            <Link href="/terms-and-conditions">
+              <a href="/terms-and-conditions" className={style.link}>
                 Terms and Conditions
               </a>
             </Link>
