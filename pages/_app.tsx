@@ -19,7 +19,7 @@ function App({ Component, pageProps }: AppProps) {
 
   return (
     <UserContext.Provider value={{ user: defaultUser, updateUser: setDefaultUser }}>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </UserContext.Provider>
   );
 }

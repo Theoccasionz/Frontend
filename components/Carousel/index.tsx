@@ -29,8 +29,8 @@ interface Props {
 
 const defaultResponsive = {
   568: { items: 1 },
-  768: { items: 2 },
-  992: { items: 4 },
+  768: { items: 3 },
+  992: { items: 5 },
 };
 
 const Carousel: FC<Props> = ({ items, responsive, autoPlay = false, autoPlayInterval = 3000 }) => {

@@ -90,6 +90,11 @@ const LayoutAdmin: FC<Props> = ({ children }) => {
                 Vendor Details
               </a>
             </Link>
+            <Link href="/admin/listed-services">
+              <a href="/admin/listed-services" className={isActive('/admin/listed-services')}>
+                Listed Services
+              </a>
+            </Link>
           </div>
         </section>
         <section className={style.main} id="main">

@@ -23,7 +23,7 @@ const PartyCard: FC<Props> = ({ value, url, imgURL }) => {
         <Link href={`/party-place/places/?${url}=${value}`}>
           <a href={`/party-place/places/?${url}=${value}`}>{value}</a>
         </Link>
-        <svg
+        {/* <svg
           xmlns="http://www.w3.org/2000/svg"
           xmlnsXlink="http://www.w3.org/1999/xlink"
           version="1.1"
@@ -67,7 +67,7 @@ const PartyCard: FC<Props> = ({ value, url, imgURL }) => {
               strokeLinecap="round"
             />
           </g>
-        </svg>
+        </svg> */}
       </div>
       <Link href={`/party-place/places/?${url}=${value}`}>
         <a href={`/party-place/places/?${url}=${value}`}>

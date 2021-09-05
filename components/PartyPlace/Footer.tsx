@@ -9,10 +9,10 @@ import style from '../../styles/party-place/footer.module.css';
 
 const Footer = () => {
   return (
-    <Container fluid className={`px-4 py-5 mt-4 ${style.footer}`}>
+    <Container fluid className={`px-3 py-3 mt-4 ${style.footer}`}>
       <Row>
         <Col lg={4} md={6} sm={12}>
-          <h2>The Occasionz</h2>
+          <h3>The Occasionz</h3>
           <p className={style.iconArea}>
             Follow us on : <br />
             <SocialIcon
@@ -35,7 +35,7 @@ const Footer = () => {
           <div
             className={`${style.companyArea}`}
           >
-            <h2>Company</h2>
+            <h3>Company</h3>
             <Link href="/about">
               <a href="/about" className={style.link}>
                 About us
@@ -64,7 +64,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h2>Contact</h2>
+            <h3>Contact</h3>
             <SocialIcon
               url="https://wa.me/message/KEKUQE5X5GNND1"
               style={{ width: '40px', height: '40px' }}

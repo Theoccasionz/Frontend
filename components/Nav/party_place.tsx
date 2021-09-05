@@ -14,7 +14,7 @@ const responsive = {
   360: { items: 1.5 },
   500: { items: 2 },
   700: { items: 3 },
-  900: { items: 4 },
+  900: { items: 5 },
   1200: { items: 6 },
 };
 
@@ -42,17 +42,17 @@ const PartyPlace: FC<Props> = ({
       {!placesPage && (
         <Fragment>
           <section
-            style={{ background: 'rgb(173 216 230 / 65%)', padding: '1rem', margin: '0.75rem' }}
+            style={{ background: 'rgb(173 216 230 / 65%)', padding: '0.5rem', margin: '0.75rem' }}
           >
-            <h1 style={{ borderBottom: '1px solid #999999', fontSize: '3rem' }}>Occasions</h1>
+            <h1 style={{ borderBottom: '1px solid #999999', fontSize: '2.25rem' }}>Occasions</h1>
             <Carousel items={occasionData} />
           </section>
-          <section style={{ background: 'rgb(249 224 223)', padding: '1rem', margin: '0.75rem' }}>
-            <h1 style={{ borderBottom: '1px solid #999999', fontSize: '3rem' }}>Theme Based</h1>
+          <section style={{ background: 'rgb(249 224 223)', padding: '0.5rem', margin: '0.75rem' }}>
+            <h1 style={{ borderBottom: '1px solid #999999', fontSize: '2.25rem' }}>Theme Based</h1>
             <Carousel items={themeData} />
           </section>
-          <section style={{ background: '#FFFFE0', padding: '1rem', margin: '0.75rem' }}>
-            <h3 style={{ borderBottom: '1px solid #999999', fontSize: '3rem' }}>Setup Place</h3>
+          <section style={{ background: '#FFFFE0', padding: '0.5rem', margin: '0.75rem' }}>
+            <h3 style={{ borderBottom: '1px solid #999999', fontSize: '2.25rem' }}>Setup Place</h3>
             <Carousel items={placeData} responsive={responsive} />
           </section>
         </Fragment>
